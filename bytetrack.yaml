@@ -1,0 +1,29 @@
+# ByteTrack Configuration for DivyaDrishti
+# Optimized for person tracking with persistent annotations
+
+# Tracker type
+tracker_type: bytetrack
+
+# Detection thresholds
+track_high_thresh: 0.6      # High confidence threshold for first association
+track_low_thresh: 0.1       # Low confidence threshold for second association  
+new_track_thresh: 0.7       # Threshold for creating new tracks
+track_buffer: 30            # Number of frames to keep lost tracks
+
+# Matching thresholds
+match_thresh: 0.8           # IoU threshold for matching detections to tracks
+proximity_thresh: 0.5       # Proximity threshold for association
+
+# Track management
+frame_rate: 30              # Expected frame rate
+track_activation_thresh: 0.6 # Confidence threshold for track activation
+
+# ByteTrack specific parameters
+high_thresh: 0.6            # High confidence detection threshold
+low_thresh: 0.1             # Low confidence detection threshold (for recovery)
+min_box_area: 10            # Minimum bounding box area
+mot20: False                # MOT20 dataset format (False for general use)
+
+# Kalman filter parameters
+std_weight_position: 1.0/20  # Standard deviation weight for position
+std_weight_velocity: 1.0/160 # Standard deviation weight for velocity

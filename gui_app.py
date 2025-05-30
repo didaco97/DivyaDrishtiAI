@@ -20,6 +20,8 @@ import utils
 from object_detector import MultiModelDetector
 from detection_logger import DetectionLogger
 from performance_monitor import PerformanceMonitor
+from frame_processor import frame_processor, video_optimizer, performance_profiler
+from optimization_panel import OptimizationPanel
 
 class DivyaDrishtiGUI:
     def __init__(self, root):
@@ -32,6 +34,7 @@ class DivyaDrishtiGUI:
         self.detector = MultiModelDetector()
         self.logger = DetectionLogger()
         self.performance_monitor = PerformanceMonitor()
+        self.optimization_panel = OptimizationPanel(self.root)
 
         # Drone feed capture variables
         self.cap = None
@@ -213,6 +216,15 @@ class DivyaDrishtiGUI:
                                     state=tk.DISABLED)
         self.stop_button.pack(side=tk.LEFT, padx=(0, 10))
 
+        # Optimization button
+        self.optimization_button = tk.Button(button_frame, text="🚀 OPTIMIZE",
+                                           command=self.show_optimization_panel,
+                                           font=('Consolas', 11, 'bold'),
+                                           fg=config.CYBERPUNK_THEME["text_color"],
+                                           bg=config.CYBERPUNK_THEME["accent_color"],
+                                           activebackground=config.CYBERPUNK_THEME["primary_color"])
+        self.optimization_button.pack(side=tk.LEFT, padx=(0, 10))
+
         # Feature toggles row
         toggles_frame = tk.Frame(control_frame, bg=config.CYBERPUNK_THEME["bg_color"])
         toggles_frame.pack(fill=tk.X, padx=10, pady=(0, 10))
@@ -235,6 +247,16 @@ class DivyaDrishtiGUI:
                                        bg=config.CYBERPUNK_THEME["button_color"])
         self.autosave_button.pack(side=tk.LEFT, padx=(0, 10))
 
+        # Tracking toggle
+        self.tracking_enabled = config.USE_TRACKING
+        self.tracking_button = tk.Button(toggles_frame,
+                                       text=f"🎯 TRACKING: {'ON' if self.tracking_enabled else 'OFF'}",
+                                       command=self.toggle_tracking,
+                                       font=('Consolas', 10, 'bold'),
+                                       fg=config.CYBERPUNK_THEME["text_color"],
+                                       bg=config.CYBERPUNK_THEME["primary_color"] if self.tracking_enabled else config.CYBERPUNK_THEME["button_color"])
+        self.tracking_button.pack(side=tk.LEFT, padx=(0, 10))
+
         # Confidence slider
         confidence_frame = tk.Frame(toggles_frame, bg=config.CYBERPUNK_THEME["bg_color"])
         confidence_frame.pack(side=tk.RIGHT)
@@ -245,7 +267,7 @@ class DivyaDrishtiGUI:
                 bg=config.CYBERPUNK_THEME["bg_color"]).pack(side=tk.LEFT)
 
         self.confidence_var = tk.DoubleVar(value=config.CONFIDENCE_THRESHOLD)
-        confidence_scale = tk.Scale(confidence_frame, from_=0.1, to=1.0,
+        confidence_scale = tk.Scale(confidence_frame, from_=0.05, to=1.0,  # Lower minimum for better detection
                                   variable=self.confidence_var, orient=tk.HORIZONTAL,
                                   length=150, resolution=0.01,
                                   bg=config.CYBERPUNK_THEME["bg_color"],
@@ -518,6 +540,31 @@ class DivyaDrishtiGUI:
 
         self.update_status(f"📹 Auto-record {'enabled' if self.auto_save_enabled else 'disabled'}")
 
+    def toggle_tracking(self):
+        """Toggle object tracking for persistent annotations"""
+        self.tracking_enabled = not self.tracking_enabled
+
+        # Update detector tracking
+        success = self.detector.enable_tracking(self.tracking_enabled)
+
+        if success:
+            button_text = f"🎯 TRACKING: {'ON' if self.tracking_enabled else 'OFF'}"
+            self.tracking_button.config(text=button_text)
+
+            if self.tracking_enabled:
+                self.tracking_button.config(bg=config.CYBERPUNK_THEME["primary_color"])
+                self.update_status("🎯 Object tracking enabled - persistent annotations activated")
+            else:
+                self.tracking_button.config(bg=config.CYBERPUNK_THEME["button_color"])
+                self.update_status("⚠️ Object tracking disabled - single-shot detection mode")
+        else:
+            self.tracking_enabled = not self.tracking_enabled  # Revert
+            messagebox.showerror("Error", "Failed to toggle tracking mode")
+
+    def show_optimization_panel(self):
+        """Show the optimization control panel"""
+        self.optimization_panel.show_optimization_panel()
+
     def update_confidence_label(self, event=None):
         """Update confidence threshold label"""
         value = self.confidence_var.get()
@@ -581,6 +628,11 @@ class DivyaDrishtiGUI:
                 messagebox.showerror("Error", f"Could not open video source: {self.video_source}")
                 return
 
+            # Optimize video capture settings
+            video_optimizer.optimize_capture(self.cap)
+            capture_info = video_optimizer.get_capture_info(self.cap)
+            print(f"📹 Video capture info: {capture_info}")
+
             # Start detection
             self.is_running = True
             self.frame_count = 0
@@ -616,14 +668,18 @@ class DivyaDrishtiGUI:
         self.clear_video_displays()
 
     def detection_loop(self):
-        """Main detection loop"""
+        """Optimized main detection loop"""
         while self.is_running and self.cap and self.cap.isOpened():
             try:
+                # Capture frame with timing
+                cap_start = performance_profiler.start_timing("frame_capture")
                 ret, frame = self.cap.read()
+                performance_profiler.end_timing("frame_capture", cap_start)
+
                 if not ret:
                     break
 
-                # Process frame with standard YOLO detection
+                # Process frame with optimized YOLO detection
                 start_time = time.time()
                 processed_frame, detections = self.detector.detect(
                     frame,
@@ -631,8 +687,9 @@ class DivyaDrishtiGUI:
                 )
                 inference_time = time.time() - start_time
 
-                # Update performance monitor
+                # Update performance monitors
                 self.performance_monitor.update_fps(inference_time)
+                frame_processor.update_fps(1.0 / inference_time if inference_time > 0 else 0)
 
                 # Log detections
                 for detection in detections:
@@ -648,8 +705,15 @@ class DivyaDrishtiGUI:
                 # Update counters
                 self.frame_count += 1
 
-                # Control frame rate
-                time.sleep(1.0 / config.MAX_FPS)
+                # Adaptive frame rate control
+                target_fps = config.MAX_FPS
+                if config.ADAPTIVE_SKIP_FRAMES:
+                    current_fps = frame_processor._get_current_fps()
+                    if current_fps > 0:
+                        sleep_time = max(0, (1.0 / target_fps) - inference_time)
+                        time.sleep(sleep_time)
+                else:
+                    time.sleep(1.0 / target_fps)
 
             except Exception as e:
                 print(f"Detection loop error: {e}")

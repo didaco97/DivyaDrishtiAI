@@ -13,7 +13,7 @@ WINDOW_TITLE = f"{APP_NAME} - AI Drone Surveillance System v{APP_VERSION}"
 
 # Paths
 BASE_DIR = Path(__file__).parent
-HIKING_MODEL_PATH = BASE_DIR.parent / "FootTrail Detection Model" / "hiking_trail_dataset" / "pretrained_model" / "foottrail.pt"
+HIKING_MODEL_PATH = BASE_DIR / "foottrail.pt"  # Simplified path - model now in DivyaDrishti folder
 SCREENSHOTS_DIR = BASE_DIR / "screenshots"
 SAVED_VIDEOS_DIR = BASE_DIR / "saved_videos"
 LOGS_DIR = BASE_DIR / "logs"
@@ -68,9 +68,9 @@ AVAILABLE_MODELS = {
 }
 
 # Default Model Settings
-DEFAULT_MODEL_KEY = "foottrail"
+DEFAULT_MODEL_KEY = "yolov11n"  # Changed to YOLOv11n for person detection
 CURRENT_MODEL = DEFAULT_MODEL_KEY
-CONFIDENCE_THRESHOLD = 0.5
+CONFIDENCE_THRESHOLD = 0.15  # Lowered for better person detection
 IOU_THRESHOLD = 0.45
 MAX_DETECTIONS = 1000
 
@@ -82,6 +82,30 @@ SKIP_FRAMES = 1  # Process every frame for best quality
 MAX_FPS = 30
 ENABLE_GPU = True
 DEVICE = "auto"  # "auto", "cpu", "cuda", "mps"
+
+# Optimization Settings
+ENABLE_TENSORRT = True  # Enable TensorRT optimization for NVIDIA GPUs
+ENABLE_ONNX = True      # Enable ONNX optimization for CPU/other devices
+MODEL_PRECISION = "fp16"  # "fp32", "fp16", "int8" - lower precision = faster inference
+OPTIMIZE_MODELS_ON_LOAD = True  # Auto-optimize models when loading
+
+# Video Processing Optimization
+FRAME_RESIZE_ENABLED = True  # Resize frames for faster processing
+FRAME_RESIZE_WIDTH = 640     # Resize width (maintains aspect ratio)
+FRAME_RESIZE_HEIGHT = 480    # Resize height
+BATCH_PROCESSING = False     # Enable batch processing (experimental)
+BATCH_SIZE = 4              # Batch size for processing multiple frames
+
+# Advanced Performance Settings
+WARM_UP_ITERATIONS = 10     # Number of warm-up iterations for model
+ENABLE_HALF_PRECISION = True  # Use half precision (FP16) for faster inference
+OPTIMIZE_FOR_MOBILE = False  # Optimize for mobile/edge devices
+ENABLE_DYNAMIC_BATCHING = False  # Dynamic batch sizing based on GPU memory
+
+# Frame Processing Strategy
+SMART_FRAME_SELECTION = False  # DISABLED for tracking - breaks continuity
+FRAME_SIMILARITY_THRESHOLD = 0.95  # Threshold for frame similarity (0-1)
+ADAPTIVE_SKIP_FRAMES = False  # DISABLED for tracking - breaks continuity
 
 # GUI Settings - Cyberpunk Theme
 CYBERPUNK_THEME = {

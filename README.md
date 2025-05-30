@@ -1,10 +1,10 @@
-# 🎯 DivyaDrishti - AI-Powered Drone Surveillance System
+# 🚁 DivyaDrishti - AI-Powered Drone Border Surveillance System
 
 <div align="center">
 
-![DivyaDrishti Logo](https://img.shields.io/badge/DivyaDrishti-AI%20Surveillance-00ff41?style=for-the-badge&logo=drone&logoColor=white)
+![DivyaDrishti Logo](https://img.shields.io/badge/DivyaDrishti-Border%20Security-00ff41?style=for-the-badge&logo=drone&logoColor=white)
 
-**Advanced AI-Powered Drone Surveillance System with Custom FootTrail Detection**
+**Advanced AI-Powered Drone Border Surveillance System for Unauthorized Trail Detection**
 
 [![Python](https://img.shields.io/badge/Python-3.8+-3776ab?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.5.1+-ee4c2c?style=flat-square&logo=pytorch&logoColor=white)](https://pytorch.org)
@@ -16,38 +16,44 @@
 
 ## 🌟 Overview
 
-**DivyaDrishti** is a cutting-edge AI-powered drone surveillance system specifically designed for outdoor monitoring and foottrail detection. Built with state-of-the-art computer vision technology, it features a **custom-trained YOLO model** for specialized foottrail and outdoor environment detection, wrapped in an intuitive cyberpunk-themed interface.
+**DivyaDrishti** is a cutting-edge AI-powered drone border surveillance system specifically designed for detecting unauthorized trails, human intrusions, and suspicious activities in restricted border zones. Built with state-of-the-art computer vision technology, it features **custom-trained YOLO models** for specialized border security scenarios, wrapped in a professional tactical interface.
 
 ### 🎯 Key Highlights
-- **Custom FootTrail Detection Model**: Specially trained YOLO model for outdoor/hiking scenarios
-- **Real-time AI Processing**: GPU-accelerated detection with 25-30 FPS performance
-- **Multi-Model Support**: Dynamic switching between YOLOv11 variants
-- **Cyberpunk GUI**: Futuristic interface with real-time monitoring capabilities
-- **Comprehensive Logging**: Advanced detection tracking and performance monitoring
+- **Border Security Focus**: AI-powered detection of unauthorized crossings and illegal trails
+- **Real-time Threat Detection**: GPU-accelerated processing with 25-30 FPS performance
+- **Multi-Model Intelligence**: Dynamic switching between YOLOv11 variants for different scenarios
+- **Persistent Object Tracking**: YOLO11 tracking with ByteTrack for continuous person monitoring
+- **Tactical Command Interface**: Professional cyberpunk-themed interface for security operations
+- **Comprehensive Intelligence**: Advanced detection tracking and evidence logging
 
 ## 🚀 Features
 
 ### 🤖 AI Detection Capabilities
-- **🥾 Custom FootTrail Detection**: Specialized model trained for outdoor environments
-- **👤 Person & Hiker Detection**: Real-time human detection and tracking
-- **🌿 Vegetation & Terrain Analysis**: Grass, rocks, trails, and natural structures
-- **📦 Equipment Recognition**: Outdoor gear and camping equipment detection
-- **🎯 Multi-Class Detection**: 8+ specialized outdoor environment classes
+- **🚨 Unauthorized Trail Detection**: Specialized model trained for illegal border crossings
+- **👤 Human Intrusion Detection**: Real-time detection of unauthorized personnel with persistent tracking
+- **🎯 Object Tracking**: YOLO11 tracking with ByteTrack for continuous person monitoring
+- **🏷️ Persistent IDs**: Each detected person gets a unique tracking ID across video frames
+- **🌿 Terrain & Environment Analysis**: Natural cover, concealment areas, and crossing points
+- **📦 Suspicious Equipment Recognition**: Detection of smuggling equipment and contraband
+- **🎯 Multi-Class Border Security**: 8+ specialized border surveillance classes
 
 ### ⚡ Advanced Technology
-- **🔄 Real-time Processing**: Live video feed analysis with GPU acceleration
+- **🔄 Real-time Processing**: Live drone feed analysis with GPU acceleration
+- **🎯 Persistent Tracking**: YOLO11 tracking with ByteTrack algorithm for stable annotations
+- **🎨 Color-coded Tracking**: Different colors for each tracked person/object
 - **🤖 AI Segmentation**: Toggle between detection and segmentation modes
 - **📊 Performance Monitoring**: Real-time FPS and system metrics
-- **💾 Smart Logging**: Simplified notification-based detection logs
-- **📸 Auto-capture**: Intelligent screenshot and video recording
-- **🗺️ Tactical Mapping**: Interactive drone location visualization
+- **💾 Intelligence Logging**: Comprehensive threat detection and evidence logging
+- **📸 Evidence Capture**: Automatic screenshot and video recording of security events
+- **🗺️ Tactical Mapping**: Interactive drone location and threat visualization
 
-### 🎮 User Experience
-- **🌌 Cyberpunk Interface**: Dark theme with neon accents and animations
-- **📱 Intuitive Controls**: Easy-to-use detection controls and settings
-- **📊 Live Dashboard**: Real-time performance and detection statistics
-- **🔧 Dynamic Configuration**: Hot-swappable models and settings
-- **📹 Multi-source Input**: Camera, video files, and stream support
+### 🎮 Command Interface
+- **🌌 Professional Theme**: Dark tactical interface with security-focused design
+- **📱 Intuitive Controls**: Easy-to-use detection controls for security personnel
+- **🎯 Tracking Controls**: Toggle persistent tracking on/off with visual feedback
+- **📊 Live Dashboard**: Real-time threat assessment and detection statistics
+- **🔧 Dynamic Configuration**: Hot-swappable models for different surveillance scenarios
+- **📹 Multi-source Input**: Drone feeds, security cameras, and surveillance streams
 
 ## 🛠️ Technology Stack
 
@@ -77,31 +83,31 @@
 🌐 Webbrowser            # Tactical map integration
 ```
 
-## 🎯 Custom FootTrail Detection Model
+## 🎯 Custom Border Surveillance Detection Model
 
 ### 🏗️ Model Architecture
-- **Base**: YOLOv11 architecture optimized for outdoor environments
-- **Training Data**: Custom dataset of hiking trails, outdoor terrains, and natural environments
-- **Classes**: 8 specialized outdoor detection classes
+- **Base**: YOLOv11 architecture optimized for border security environments
+- **Training Data**: Custom dataset of border crossings, unauthorized trails, and restricted zones
+- **Classes**: 8 specialized border surveillance detection classes
 - **Performance**: 25-30 FPS on NVIDIA GTX 1650, 54.8MB model size
 
-### 🌿 Detection Classes
+### 🚨 Detection Classes
 ```
-🌱 grass          # Grass and ground vegetation
-🪨 rock           # Rock formations and stones
-🥾 rocky-trail    # Rocky hiking trails
-🌳 roots          # Tree roots and natural obstacles
-🛤️ rough-trail    # Rough or uneven trail surfaces
-🏗️ structure      # Man-made structures and facilities
-🌲 tree-trunk     # Tree trunks and large vegetation
-🌿 vegetation     # General vegetation and plant life
+🌱 grass          # Ground cover and concealment areas
+🪨 rock           # Rock formations and natural barriers
+🥾 unauthorized-trail    # Illegal crossing paths and smuggling routes
+🌳 roots          # Natural obstacles and concealment points
+🛤️ rough-terrain    # Difficult crossing areas and natural barriers
+🏗️ structure      # Border infrastructure and security installations
+🌲 tree-trunk     # Large vegetation providing cover
+🌿 vegetation     # Natural concealment and hiding spots
 ```
 
 ### 📊 Model Performance
-- **Accuracy**: High precision for outdoor environment detection
+- **Accuracy**: High precision for border security threat detection
 - **Speed**: Real-time processing at 25-30 FPS (GPU)
-- **Size**: Optimized 54.8MB model for efficient deployment
-- **Compatibility**: CUDA-accelerated with CPU fallback support
+- **Size**: Optimized 54.8MB model for efficient field deployment
+- **Compatibility**: CUDA-accelerated with CPU fallback for remote operations
 
 ## 📁 Project Structure
 
@@ -109,30 +115,33 @@
 DivyaDrishti/
 ├── 🎯 main.py                      # Application entry point
 ├── 🎮 gui_app.py                   # Cyberpunk-themed GUI interface
-├── 🤖 object_detector.py           # Multi-model YOLO detector
+├── 🤖 object_detector.py           # Multi-model YOLO detector with tracking
 ├── 📊 detection_logger.py          # Simplified notification logging
 ├── ⚡ performance_monitor.py       # Real-time performance tracking
 ├── 🔧 config.py                    # System configuration
 ├── 🛠️ utils.py                     # Utility functions and helpers
+├── 🎞️ frame_processor.py           # Video frame processing and optimization
+├── 🎛️ optimization_panel.py        # Performance optimization controls
+├── 🔧 model_optimizer.py           # AI model optimization engine
 ├── 📋 requirements.txt             # Python dependencies
-├── 🎯 divyadrishti_tracker.yaml    # Custom tracking configuration
+├── 🎯 bytetrack.yaml               # ByteTrack tracking configuration
+├── 🎯 divyadrishti_tracker.yaml    # Custom BoT-SORT tracking configuration
 ├── 🗺️ tactical_map.html            # Interactive map interface
 ├── 🚀 Installation Scripts/
 │   ├── install.bat                 # Windows installation
 │   ├── install.sh                  # Linux/macOS installation
-│   └── install_dependencies.py     # Python dependency installer
-├── 📁 logs/                        # Detection and performance logs
-├── 📸 screenshots/                 # Captured screenshots
-├── 🎬 saved_videos/                # Processed video outputs
-├── 📚 Documentation/
-│   ├── README.md                   # This file
-│   ├── SYSTEM_OVERVIEW.md          # Technical overview
-│   └── SYSTEM_COMPLETE.md          # Complete system documentation
-└── 🎯 Models/
-    └── FootTrail Detection Model/  # Custom trained model
-        └── hiking_trail_dataset/
-            └── pretrained_model/
-                └── foottrail.pt    # Custom FootTrail YOLO model
+│   ├── install_dependencies.py     # Python dependency installer
+│   └── install_optimization_deps.py # Performance optimization installer
+├── 🎯 AI Models/                   # Production-ready models (210.2 MB)
+│   ├── foottrail.pt               # Custom FootTrail detection (54.8 MB)
+│   ├── yolo11n.pt                 # Fast person detection (5.6 MB)
+│   ├── yolo11s.pt                 # Balanced performance (19.3 MB)
+│   ├── yolo11m.pt                 # High accuracy (40.7 MB)
+│   ├── yolo11s-seg.pt             # Segmentation mode (20.7 MB)
+│   └── *.onnx                     # Optimized ONNX versions
+├── 📁 logs/                        # Detection logs (cleaned)
+├── 📁 Models/optimized/            # Cached optimized models
+└── 📄 LICENSE                      # MIT License
 ```
 
 ## 🚀 Quick Start Guide
@@ -164,6 +173,9 @@ chmod +x install.sh
 # 🐍 Manual Installation
 python install_dependencies.py
 pip install -r requirements.txt
+
+# ⚡ Performance Optimization (Optional)
+python install_optimization_deps.py
 ```
 
 #### 3️⃣ Verify Installation
@@ -177,10 +189,12 @@ python main.py
 ```
 
 ### 🎮 First Run
-1. **Select Input Source**: Choose camera, video file, or stream
-2. **Choose Model**: Select FootTrail Detection Model (default)
-3. **Start Detection**: Click "🚀 START DETECTION"
-4. **Monitor Results**: View real-time detections in the notification panel
+1. **Select Input Source**: Choose drone feed, security camera, or surveillance stream
+2. **Choose Model**: Select YOLOv11n for person detection (recommended) or FootTrail for terrain analysis
+3. **Enable Tracking**: Click "🎯 TRACKING: OFF" to turn it ON for persistent annotations
+4. **Adjust Confidence**: Lower the confidence slider to 10-15% for better person detection
+5. **Start Surveillance**: Click "🚀 START SURVEILLANCE"
+6. **Monitor Threats**: View real-time detections with persistent tracking IDs
 
 ## 🔧 Configuration & Customization
 
@@ -188,12 +202,17 @@ python main.py
 Edit `config.py` to customize:
 ```python
 # Detection Settings
-CONFIDENCE_THRESHOLD = 0.5      # Detection confidence
-DEFAULT_MODEL_KEY = "foottrail" # Default model selection
-ENABLE_GPU = True               # GPU acceleration
+CONFIDENCE_THRESHOLD = 0.15     # Lowered for better person detection
+DEFAULT_MODEL_KEY = "yolov11n"  # YOLOv11n for person detection
+ENABLE_GPU = True               # GPU acceleration for real-time processing
+
+# Tracking Settings
+USE_TRACKING = True             # Enable persistent object tracking
+SMART_FRAME_SELECTION = False   # Disabled for tracking continuity
+ADAPTIVE_SKIP_FRAMES = False    # Disabled for tracking continuity
 
 # GUI Settings
-CYBERPUNK_THEME = {             # Interface styling
+CYBERPUNK_THEME = {             # Professional interface styling
     "primary_color": "#00ff41",
     "bg_color": "#0a0a0a"
 }
@@ -219,20 +238,23 @@ SKIP_FRAMES = 1                 # Frame processing interval
 ## 🎮 User Interface Guide
 
 ### 🎛️ Main Controls
-- **🚀 START DETECTION**: Begin real-time AI detection
-- **⏹️ STOP**: Stop detection process
+- **🚀 START SURVEILLANCE**: Begin real-time AI detection and tracking
+- **⏹️ STOP SURVEILLANCE**: Stop detection process
 - **📹 SOURCE**: Select input source (camera/video/stream)
 - **🎯 MODEL**: Switch between available YOLO models
+- **🎯 TRACKING**: Toggle persistent object tracking ON/OFF
 - **🤖 AI ANALYSIS**: Toggle segmentation mode
+- **📹 AUTO-RECORD**: Toggle automatic video recording
 - **📸 SCREENSHOT**: Capture current frame
+- **🚀 OPTIMIZE**: Open performance optimization panel
 - **🗺️ TACTICAL MAP**: Open interactive map
 - **🔄 RESTART**: Restart application
 
 ### 📊 Information Panels
-- **🎯 Detection Notifications**: Simple one-line detection alerts
+- **🎯 Threat Alerts**: Real-time security breach notifications
 - **📈 Performance Monitor**: Real-time FPS and system metrics
-- **🗺️ Drone Location**: GPS coordinates and sector information
-- **⚙️ System Status**: Model info and device status
+- **🗺️ Drone Location**: GPS coordinates and surveillance sector information
+- **⚙️ System Status**: Model info and security device status
 
 ### 🎚️ Settings Panel
 - **Confidence Threshold**: Adjust detection sensitivity
@@ -247,7 +269,7 @@ SKIP_FRAMES = 1                 # Frame processing interval
 ```
 ✗ FootTrail model not found
 ```
-**Solution**: Ensure model is at: `FootTrail Detection Model/hiking_trail_dataset/pretrained_model/foottrail.pt`
+**Solution**: Ensure model is at: `DivyaDrishti/foottrail.pt` (models are now in the main directory)
 
 #### GPU Not Available
 ```
@@ -269,12 +291,57 @@ SKIP_FRAMES = 1                 # Frame processing interval
 - **High Memory Usage**: Restart application or close other programs
 - **Detection Lag**: Reduce video resolution or increase frame skip
 
+#### Tracking Issues
+```
+⚠️ Tracking annotations flickering
+```
+**Solutions**:
+1. Enable tracking: Click "🎯 TRACKING: OFF" to turn it ON
+2. Lower confidence threshold to 10-15%
+3. Ensure YOLOv11n model is selected
+4. Disable frame skipping in config.py
+
+#### Low Detection Rate
+```
+⚠️ People not being detected
+```
+**Solutions**:
+1. Lower confidence slider to 10-15%
+2. Switch to YOLOv11n model for person detection
+3. Ensure good lighting in video feed
+4. Check if 'person' class is in model
+
 ### 🔍 Debug Mode
 ```bash
 python main.py --debug    # Enable debug logging
 python main.py --version  # Show version info
 python main.py --check    # System diagnostics
 ```
+
+## 🆕 Recent Updates & Improvements
+
+### ✨ Version 1.0.0 - Production Release
+- **🎯 Persistent Object Tracking**: Implemented YOLO11 tracking with ByteTrack algorithm
+- **🏷️ Stable Annotations**: Each person gets a unique, persistent tracking ID
+- **🎨 Color-coded Tracking**: Different colors for different tracked objects
+- **🧹 System Cleanup**: Removed 17.3 MB of unnecessary files for production deployment
+- **📁 Model Reorganization**: Simplified model paths for faster loading
+- **⚡ Performance Optimization**: Enhanced GPU acceleration and memory management
+- **🔧 Configuration Updates**: Lowered default confidence for better person detection
+- **🎛️ Enhanced GUI**: Added tracking controls and optimization panel
+
+### 🎯 Tracking Features
+- **Persistent IDs**: Track people across video frames with consistent annotations
+- **ByteTrack Algorithm**: Robust tracking that handles occlusions and re-identification
+- **Visual Feedback**: Green "🎯 TRACKING: ON" button shows tracking status
+- **Confidence Optimization**: Lowered to 15% for better person detection
+- **Frame Continuity**: Disabled frame skipping for smooth tracking
+
+### 🧹 System Optimization
+- **Production Ready**: Cleaned system with only essential files (210.2 MB total)
+- **Faster Startup**: Removed test files and cache for quicker loading
+- **Simplified Paths**: Models now directly in main directory
+- **Auto-cleanup**: Old logs and temporary files automatically managed
 
 ## 📊 Performance Benchmarks
 
@@ -325,7 +392,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **Dhiraj Dahale** - *Project Lead & AI Engineer*
 - 🔗 GitHub: [@didaco97](https://github.com/didaco97)
 - 📧 Email: dhirajdahale96@gmail.com
-- 💼 LinkedIn: [Dhiraj Dahale](https://linkedin.com/in/dhiraj-dahale)
+- 💼 LinkedIn: [Dhiraj Dahale](https://www.linkedin.com/in/dhiraj-dahale-028b6229b)
 
 ### 🤝 Development Team
 - **AI/ML Engineering**: Custom model training and optimization
@@ -365,7 +432,7 @@ python main.py --debug
 
 <div align="center">
 
-**🎯 DivyaDrishti v1.0.0** - *AI-Powered Drone Surveillance System*
+**🚁 DivyaDrishti v1.0.0** - *AI-Powered Drone Border Surveillance System*
 
 *Developed with ❤️ by Dhiraj Dahale and Team*
 

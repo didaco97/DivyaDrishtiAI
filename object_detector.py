@@ -10,6 +10,8 @@ from ultralytics import YOLO
 from pathlib import Path
 import config
 import utils
+from model_optimizer import model_optimizer
+from frame_processor import frame_processor, performance_profiler
 
 class MultiModelDetector:
     def __init__(self):
@@ -104,12 +106,27 @@ class MultiModelDetector:
                     print(f"✗ Failed to re-download {model_info['name']}")
                     return False
 
+            # Optimize model if enabled
+            if config.OPTIMIZE_MODELS_ON_LOAD:
+                optimized_path = model_optimizer.optimize_model(model_path, model_key)
+                if optimized_path != model_path:
+                    print(f"✅ Using optimized model: {optimized_path}")
+                    model_path = optimized_path
+
             # Load new model (force fresh load - don't use any cache)
             self.model = YOLO(model_path)
 
-            # Move model to device
+            # Move model to device and apply optimizations
             if self.device != "cpu":
                 self.model.to(self.device)
+
+            # Apply half precision if enabled
+            if config.ENABLE_HALF_PRECISION and self.device == "cuda":
+                try:
+                    self.model.half()
+                    print("✅ Half precision (FP16) enabled")
+                except Exception as e:
+                    print(f"⚠️ Half precision failed: {e}")
 
             # Update current model key FIRST
             self.current_model_key = model_key
@@ -300,58 +317,133 @@ class MultiModelDetector:
         return models
 
     def detect(self, frame, confidence_threshold=None, enable_tracking=None):
-        """Detect objects in frame using standard YOLO detection"""
+        """Detect objects in frame using YOLO tracking for persistent annotations"""
         if not self.is_model_loaded():
             return frame, []
 
         if confidence_threshold is None:
             confidence_threshold = config.CONFIDENCE_THRESHOLD
 
+        # Enable tracking by default for persistent annotations
+        if enable_tracking is None:
+            enable_tracking = config.USE_TRACKING
+
         try:
-            # Standard YOLO detection without tracking
-            results = self.model(
-                frame,
-                conf=confidence_threshold,
-                iou=config.IOU_THRESHOLD,
-                max_det=config.MAX_DETECTIONS,
-                device=self.device,
-                verbose=False
-            )
+            # Start performance profiling
+            total_start = performance_profiler.start_timing("total_pipeline")
+
+            # DISABLE frame skipping for tracking - we need every frame for continuity
+            # Only optimize the frame, don't skip it
+            opt_start = performance_profiler.start_timing("frame_optimization")
+            optimized_frame = frame_processor.optimize_frame(frame)
+            performance_profiler.end_timing("frame_optimization", opt_start)
+
+            # Model inference with tracking for persistent IDs
+            inf_start = performance_profiler.start_timing("model_inference")
+
+            if enable_tracking:
+                # Use YOLO tracking mode with persistent IDs
+                try:
+                    results = self.model.track(
+                        optimized_frame,
+                        conf=confidence_threshold,
+                        iou=config.IOU_THRESHOLD,
+                        max_det=config.MAX_DETECTIONS,
+                        persist=True,  # This is KEY for persistent tracking
+                        device=self.device,
+                        verbose=False,
+                        half=config.ENABLE_HALF_PRECISION and self.device == "cuda"
+                    )
+                except Exception as track_error:
+                    print(f"⚠️ Tracking failed, falling back to detection: {track_error}")
+                    # Fallback to regular detection if tracking fails
+                    results = self.model(
+                        optimized_frame,
+                        conf=confidence_threshold,
+                        iou=config.IOU_THRESHOLD,
+                        max_det=config.MAX_DETECTIONS,
+                        device=self.device,
+                        verbose=False,
+                        half=config.ENABLE_HALF_PRECISION and self.device == "cuda"
+                    )
+            else:
+                # Fallback to regular detection
+                results = self.model(
+                    optimized_frame,
+                    conf=confidence_threshold,
+                    iou=config.IOU_THRESHOLD,
+                    max_det=config.MAX_DETECTIONS,
+                    device=self.device,
+                    verbose=False,
+                    half=config.ENABLE_HALF_PRECISION and self.device == "cuda"
+                )
+
+            inference_time = performance_profiler.end_timing("model_inference", inf_start)
 
             # Process results
+            post_start = performance_profiler.start_timing("post_processing")
             detections = []
             annotated_frame = frame.copy()
 
+            # Debug: Print detection info
             if results and len(results) > 0:
                 result = results[0]
+                print(f"🔍 Detection result: boxes={result.boxes is not None}, "
+                      f"num_boxes={len(result.boxes) if result.boxes is not None else 0}")
 
                 if result.boxes is not None and len(result.boxes) > 0:
                     boxes = result.boxes.xyxy.cpu().numpy()
                     confidences = result.boxes.conf.cpu().numpy()
                     class_ids = result.boxes.cls.cpu().numpy().astype(int)
 
+                    # Get tracking IDs if available (from tracking mode)
+                    track_ids = None
+                    if hasattr(result.boxes, 'id') and result.boxes.id is not None:
+                        track_ids = result.boxes.id.cpu().numpy().astype(int)
+
                     for i, (box, conf, cls_id) in enumerate(zip(boxes, confidences, class_ids)):
                         x1, y1, x2, y2 = box
+
+                        # Scale coordinates back to original frame size if frame was resized
+                        if config.FRAME_RESIZE_ENABLED:
+                            orig_h, orig_w = frame.shape[:2]
+                            opt_h, opt_w = optimized_frame.shape[:2]
+
+                            if orig_w != opt_w or orig_h != opt_h:
+                                scale_x = orig_w / opt_w
+                                scale_y = orig_h / opt_h
+                                x1, x2 = x1 * scale_x, x2 * scale_x
+                                y1, y2 = y1 * scale_y, y2 * scale_y
 
                         # Get class name
                         class_name = self.class_names[cls_id] if cls_id < len(self.class_names) else f"class_{cls_id}"
 
-                        # Create detection info
+                        # Get tracking ID if available
+                        track_id = track_ids[i] if track_ids is not None and i < len(track_ids) else None
+
+                        # Create detection info with tracking ID
                         detection = {
                             'bbox': [int(x1), int(y1), int(x2), int(y2)],
                             'confidence': float(conf),
                             'class_id': int(cls_id),
                             'class_name': class_name,
+                            'track_id': track_id,  # Add tracking ID
                             'area': utils.calculate_box_area(x1, y1, x2, y2),
                             'center': utils.calculate_box_center(x1, y1, x2, y2)
                         }
 
                         detections.append(detection)
 
-                        # Draw bounding box and label
+                        # Draw bounding box and label with tracking ID
                         annotated_frame = self._draw_detection(annotated_frame, detection)
 
+            performance_profiler.end_timing("post_processing", post_start)
+            performance_profiler.end_timing("total_pipeline", total_start)
+
+            # Update performance tracking
+            self.inference_times.append(inference_time)
             self.frame_count += 1
+
             return annotated_frame, detections
 
         except Exception as e:
@@ -361,21 +453,32 @@ class MultiModelDetector:
 
 
     def _draw_detection(self, frame, detection):
-        """Draw detection on frame with cyberpunk styling"""
+        """Draw detection on frame with cyberpunk styling and tracking ID"""
         x1, y1, x2, y2 = detection['bbox']
         confidence = detection['confidence']
         class_name = detection['class_name']
+        track_id = detection.get('track_id', None)
 
-        # Grey color scheme as requested
-        color = (128, 128, 128)  # Grey for all detections
+        # Dynamic color scheme based on class with tracking-specific colors
+        if class_name == "person":
+            if track_id is not None:
+                # Use consistent colors for tracked people based on ID
+                color_map = [(0, 255, 0), (255, 0, 255), (255, 255, 0), (0, 255, 255), (255, 128, 0)]
+                color = color_map[track_id % len(color_map)]
+            else:
+                color = (0, 255, 0)  # Default green for untracked people
+        elif "trail" in class_name.lower() or "path" in class_name.lower():
+            color = (0, 255, 255)  # Cyan for trails
+        else:
+            color = (128, 128, 128)  # Grey for other detections
 
         # Draw bounding box with cyberpunk style
-        thickness = 2
+        thickness = 3  # Increased thickness for better visibility
         cv2.rectangle(frame, (x1, y1), (x2, y2), color, thickness)
 
         # Draw corner accents
-        corner_length = 20
-        corner_thickness = 3
+        corner_length = 25  # Increased corner length
+        corner_thickness = 4  # Increased corner thickness
 
         # Top-left corner
         cv2.line(frame, (x1, y1), (x1 + corner_length, y1), color, corner_thickness)
@@ -393,10 +496,14 @@ class MultiModelDetector:
         cv2.line(frame, (x2, y2), (x2 - corner_length, y2), color, corner_thickness)
         cv2.line(frame, (x2, y2), (x2, y2 - corner_length), color, corner_thickness)
 
-        # Label without track ID
-        label = f"{class_name} {confidence:.2%}"
+        # Label with tracking ID if available
+        if track_id is not None:
+            label = f"{class_name.upper()} ID:{track_id} {confidence:.1%}"
+        else:
+            label = f"{class_name.upper()} {confidence:.1%}"
+
         font = cv2.FONT_HERSHEY_SIMPLEX
-        font_scale = 0.6
+        font_scale = 0.7  # Increased font size
         font_thickness = 2
 
         (label_width, label_height), baseline = cv2.getTextSize(label, font, font_scale, font_thickness)
@@ -443,14 +550,36 @@ class MultiModelDetector:
 
     def switch_mode(self, mode):
         """Switch between detection and segmentation modes"""
-        if mode not in ["detect", "segment"]:
+        if mode not in ["detect", "segment", "track"]:
             return False
 
         try:
             # For hiking trail model, we'll use the same model but different inference
             self.current_mode = mode
             print(f"✓ Switched to {mode} mode")
+
+            # Update tracking configuration based on mode
+            if mode == "track":
+                config.USE_TRACKING = True
+                config.SMART_FRAME_SELECTION = False  # Disable for tracking
+                config.ADAPTIVE_SKIP_FRAMES = False   # Disable for tracking
+                print("✓ Tracking mode enabled - frame skipping disabled")
+            else:
+                config.USE_TRACKING = False
+                print("✓ Detection mode - tracking disabled")
+
             return True
         except Exception as e:
             print(f"✗ Error switching mode: {e}")
             return False
+
+    def enable_tracking(self, enable=True):
+        """Enable or disable object tracking"""
+        config.USE_TRACKING = enable
+        if enable:
+            config.SMART_FRAME_SELECTION = False  # Disable frame skipping for tracking
+            config.ADAPTIVE_SKIP_FRAMES = False
+            print("✅ Object tracking enabled - persistent annotations activated")
+        else:
+            print("⚠️ Object tracking disabled - single-shot detection mode")
+        return True
