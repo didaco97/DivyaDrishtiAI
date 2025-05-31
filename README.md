@@ -157,8 +157,8 @@ DivyaDrishti/
 
 #### 1️⃣ Clone Repository
 ```bash
-git clone https://github.com/didaco97/DivyaDrishti.git
-cd DivyaDrishti
+git clone https://github.com/didaco97/DivyaDrishtiAI.git
+cd DivyaDrishtiAI
 ```
 
 #### 2️⃣ Install Dependencies
@@ -415,10 +415,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 4. **Email**: Contact the development team directly
 
 ### 🔗 Links
-- **Repository**: [https://github.com/didaco97/DivyaDrishti](https://github.com/didaco97/DivyaDrishti)
-- **Documentation**: [Wiki](https://github.com/didaco97/DivyaDrishti/wiki)
-- **Issues**: [Bug Reports](https://github.com/didaco97/DivyaDrishti/issues)
-- **Releases**: [Latest Releases](https://github.com/didaco97/DivyaDrishti/releases)
+- **Repository**: [https://github.com/didaco97/DivyaDrishtiAI](https://github.com/didaco97/DivyaDrishtiAI)
+- **Documentation**: [Wiki](https://github.com/didaco97/DivyaDrishtiAI/wiki)
+- **Issues**: [Bug Reports](https://github.com/didaco97/DivyaDrishtiAI/issues)
+- **Releases**: [Latest Releases](https://github.com/didaco97/DivyaDrishtiAI/releases)
 
 ### 📊 System Information
 ```bash
@@ -436,8 +436,8 @@ python main.py --debug
 
 *Developed with ❤️ by Dhiraj Dahale and Team*
 
-[![GitHub Stars](https://img.shields.io/github/stars/didaco97/DivyaDrishti?style=social)](https://github.com/didaco97/DivyaDrishti/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/didaco97/DivyaDrishti?style=social)](https://github.com/didaco97/DivyaDrishti/network/members)
-[![GitHub Issues](https://img.shields.io/github/issues/didaco97/DivyaDrishti)](https://github.com/didaco97/DivyaDrishti/issues)
+[![GitHub Stars](https://img.shields.io/github/stars/didaco97/DivyaDrishtiAI?style=social)](https://github.com/didaco97/DivyaDrishtiAI/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/didaco97/DivyaDrishtiAI?style=social)](https://github.com/didaco97/DivyaDrishtiAI/network/members)
+[![GitHub Issues](https://img.shields.io/github/issues/didaco97/DivyaDrishtiAI)](https://github.com/didaco97/DivyaDrishtiAI/issues)
 
 </div>
