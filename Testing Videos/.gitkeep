@@ -1,0 +1,8 @@
+# This file ensures the Testing Videos directory is tracked by Git
+# Test video files for DivyaDrishti AI testing will be stored here
+# Video files (*.mp4, *.avi, etc.) are ignored by .gitignore but this folder structure is preserved
+# 
+# To add test videos to this folder:
+# 1. Place your test videos here locally
+# 2. The application can access them for testing
+# 3. Videos remain local only (not pushed to GitHub due to size)
