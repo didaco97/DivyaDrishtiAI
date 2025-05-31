@@ -126,25 +126,31 @@ saved_videos/*.mp4
 saved_videos/*.avi
 saved_videos/!.gitkeep
 
-# Large model files (optional - comment out if you want to include models)
-*.pt
-*.pth
-*.onnx
-*.trt
+# Allow Testing Videos for complete project setup
+!Testing Videos/
+!Testing Videos/*.mp4
+!Testing Videos/*.avi
+
+# Allow essential model files for project to run
+# Comment out the lines below if you want to exclude large model files
+# *.pt
+# *.pth
+# *.onnx
+# *.trt
 
 # Temporary files
 *.tmp
 *.temp
 *.bak
 
-# Video files for testing (optional)
-*.mp4
-*.avi
-*.mov
-*.mkv
-*.wmv
-*.flv
-*.webm
+# Video files for testing (commented out to allow testing videos)
+# *.mp4
+# *.avi
+# *.mov
+# *.mkv
+# *.wmv
+# *.flv
+# *.webm
 
 # Partial downloads
 *.partial
