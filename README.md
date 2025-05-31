@@ -22,23 +22,42 @@
 
 <div align="center">
 
-![Main Interface](assets/images/main-interface.png)
-*Professional cyberpunk-themed surveillance interface*
+### 🖥️ Main Interface - Ready for Surveillance
+<img src="assets/images/main-interface.png" alt="DivyaDrishti Main Interface" width="800"/>
 
-![Detection in Action](assets/images/detection-example.png)
-*Real-time AI detection with persistent tracking*
+*Professional cyberpunk-themed surveillance interface featuring the control matrix, model selection (YOLOv11n), dual-panel layout for drone feed and AI analysis, performance monitoring, and tactical map integration. The clean, organized design provides intuitive access to all surveillance functions.*
+
+---
+
+### 🎯 AI Detection in Action - Real-Time Person Tracking
+<img src="assets/images/detection-example.png" alt="Real-time Person Detection" width="800"/>
+
+*Advanced AI detection system actively tracking multiple individuals with persistent IDs (PERSON ID:7, etc.). Features color-coded bounding boxes, real-time detection notifications with timestamps, and performance metrics showing 21 FPS processing speed. The system demonstrates robust multi-person tracking capabilities.*
+
+---
+
+### 🗺️ Tactical Surveillance Map - Border Monitoring
+<img src="assets/images/tactical-map.png" alt="Tactical Surveillance Map" width="800"/>
+
+*Interactive tactical map interface showing real-world India-Pakistan border surveillance operations. Includes Alpha drone status panel with GPS coordinates, mission details, flight time tracking, detection status indicators, and professional military-grade interface design for strategic border monitoring.*
 
 </div>
 
-### 🎬 Demo Video
+### 🎬 Demo Videos & Presentation
 
 <div align="center">
 
-[![DivyaDrishti Demo](assets/images/demo-thumbnail.png)](assets/videos/divyadrishti-demo.mp4)
-*Click to watch the full application demonstration*
+### 🎥 YouTube Demonstrations
 
-![Demo GIF](assets/images/demo-preview.gif)
-*Quick preview of AI detection in action*
+| Demo Video 1 | Demo Video 2 |
+|:---:|:---:|
+| [![DivyaDrishti Demo 1](https://img.shields.io/badge/▶️_Watch_Demo_1-YouTube-red?style=for-the-badge&logo=youtube&logoColor=white)](YOUTUBE_URL_1_HERE) | [![DivyaDrishti Demo 2](https://img.shields.io/badge/▶️_Watch_Demo_2-YouTube-red?style=for-the-badge&logo=youtube&logoColor=white)](YOUTUBE_URL_2_HERE) |
+| *Application Overview & Features* | *AI Detection & Tracking Demo* |
+
+### 📊 Project Presentation
+[![PowerPoint Presentation](https://img.shields.io/badge/📊_Project_Presentation-Google_Drive-4285f4?style=for-the-badge&logo=googledrive&logoColor=white)](https://drive.google.com/file/d/1f9MaNopNNxVizS0-yqrtbOhaFWTapv9L/view?usp=sharing)
+
+*Comprehensive project overview, technical details, and implementation insights*
 
 </div>
 
@@ -49,6 +68,19 @@
 - **Persistent Object Tracking**: YOLO11 tracking with ByteTrack for continuous person monitoring
 - **Tactical Command Interface**: Professional cyberpunk-themed interface for security operations
 - **Comprehensive Intelligence**: Advanced detection tracking and evidence logging
+
+### 📚 Documentation & Resources
+
+<div align="center">
+
+| Resource | Description | Link |
+|:---:|:---:|:---:|
+| 📊 **Project Presentation** | Comprehensive overview & technical details | [![PPT](https://img.shields.io/badge/View-PowerPoint-4285f4?style=flat-square&logo=googledrive)](https://drive.google.com/file/d/1f9MaNopNNxVizS0-yqrtbOhaFWTapv9L/view?usp=sharing) |
+| 🎬 **Demo Video 1** | Application overview & features | [![Demo1](https://img.shields.io/badge/Watch-YouTube-red?style=flat-square&logo=youtube)](YOUTUBE_URL_1_HERE) |
+| 🎯 **Demo Video 2** | AI detection & tracking demo | [![Demo2](https://img.shields.io/badge/Watch-YouTube-red?style=flat-square&logo=youtube)](YOUTUBE_URL_2_HERE) |
+| 📖 **Documentation** | Installation & usage guide | [![Docs](https://img.shields.io/badge/Read-Documentation-green?style=flat-square&logo=gitbook)](README.md) |
+
+</div>
 
 ## 🚀 Features
 
@@ -373,10 +405,10 @@ python main.py --check    # System diagnostics
 
 <div align="center">
 
-| Main Interface | Detection Panel | Settings Panel |
+| Main Interface | Detection in Action | Tactical Map |
 |:---:|:---:|:---:|
-| ![Main](assets/images/interface-main.png) | ![Detection](assets/images/interface-detection.png) | ![Settings](assets/images/interface-settings.png) |
-| *Cyberpunk-themed main interface* | *Real-time detection panel* | *Configuration settings* |
+| ![Main](assets/images/main-interface.png) | ![Detection](assets/images/detection-example.png) | ![Map](assets/images/tactical-map.png) |
+| *Cyberpunk-themed surveillance interface* | *Real-time AI detection with tracking* | *Interactive border surveillance map* |
 
 </div>
 
@@ -384,10 +416,10 @@ python main.py --check    # System diagnostics
 
 <div align="center">
 
-| Person Detection | Trail Detection | Multi-Object Tracking |
+| Person Detection | Multi-Person Tracking | Border Surveillance |
 |:---:|:---:|:---:|
-| ![Person](assets/images/detection-person.png) | ![Trail](assets/images/detection-trail.png) | ![Multi](assets/images/detection-multi.png) |
-| *Person detection with tracking ID* | *Unauthorized trail detection* | *Multiple object tracking* |
+| ![Person](assets/images/detection-example.png) | ![Multi](assets/images/detection-example.png) | ![Border](assets/images/tactical-map.png) |
+| *Real-time person detection with IDs* | *Multiple people tracking (21 FPS)* | *Strategic border monitoring* |
 
 </div>
 
@@ -395,11 +427,11 @@ python main.py --check    # System diagnostics
 
 <div align="center">
 
-| Feature | Preview | Description |
+| Demo Video | Content | YouTube Link |
 |:---:|:---:|:---:|
-| **Real-time Detection** | ![Detection GIF](assets/images/demo-detection.gif) | Live AI detection in action |
-| **Object Tracking** | ![Tracking GIF](assets/images/demo-tracking.gif) | Persistent object tracking |
-| **Model Switching** | ![Models GIF](assets/images/demo-models.gif) | Dynamic model switching |
+| **🎥 Demo 1** | Application Overview & Features | [![Watch Demo 1](https://img.shields.io/badge/▶️_Watch-YouTube-red?style=flat-square&logo=youtube)](YOUTUBE_URL_1_HERE) |
+| **🎯 Demo 2** | AI Detection & Tracking | [![Watch Demo 2](https://img.shields.io/badge/▶️_Watch-YouTube-red?style=flat-square&logo=youtube)](YOUTUBE_URL_2_HERE) |
+| **📊 Presentation** | Technical Overview | [![View PPT](https://img.shields.io/badge/📊_View-PowerPoint-4285f4?style=flat-square&logo=googledrive)](https://drive.google.com/file/d/1f9MaNopNNxVizS0-yqrtbOhaFWTapv9L/view?usp=sharing) |
 
 </div>
 
@@ -476,6 +508,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### 🔗 Links
 - **Repository**: [https://github.com/didaco97/DivyaDrishtiAI](https://github.com/didaco97/DivyaDrishtiAI)
+- **📊 Project Presentation**: [PowerPoint Slides](https://drive.google.com/file/d/1f9MaNopNNxVizS0-yqrtbOhaFWTapv9L/view?usp=sharing)
 - **Documentation**: [Wiki](https://github.com/didaco97/DivyaDrishtiAI/wiki)
 - **Issues**: [Bug Reports](https://github.com/didaco97/DivyaDrishtiAI/issues)
 - **Releases**: [Latest Releases](https://github.com/didaco97/DivyaDrishtiAI/releases)
