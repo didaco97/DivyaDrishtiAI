@@ -1,0 +1,3 @@
+# This file ensures the Models directory is tracked by Git
+# AI model files will be stored here
+# Large model files (*.pt, *.onnx, *.trt) are ignored by .gitignore but this folder structure is preserved

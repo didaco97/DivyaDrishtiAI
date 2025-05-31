@@ -1,0 +1,3 @@
+# This file ensures the saved_videos directory is tracked by Git
+# Processed video files will be stored here
+# Files: *.mp4, *.avi, *.mov etc. are ignored by .gitignore but this folder structure is preserved

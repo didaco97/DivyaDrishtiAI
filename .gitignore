@@ -118,10 +118,13 @@ Thumbs.db
 # Project specific
 logs/*.csv
 logs/*.json
+logs/!.gitkeep
 screenshots/*.jpg
 screenshots/*.png
+screenshots/!.gitkeep
 saved_videos/*.mp4
 saved_videos/*.avi
+saved_videos/!.gitkeep
 
 # Large model files (optional - comment out if you want to include models)
 *.pt
