@@ -18,6 +18,30 @@
 
 **DivyaDrishti** is a cutting-edge AI-powered drone border surveillance system specifically designed for detecting unauthorized trails, human intrusions, and suspicious activities in restricted border zones. Built with state-of-the-art computer vision technology, it features **custom-trained YOLO models** for specialized border security scenarios, wrapped in a professional tactical interface.
 
+### 📸 Application Screenshots
+
+<div align="center">
+
+![Main Interface](assets/images/main-interface.png)
+*Professional cyberpunk-themed surveillance interface*
+
+![Detection in Action](assets/images/detection-example.png)
+*Real-time AI detection with persistent tracking*
+
+</div>
+
+### 🎬 Demo Video
+
+<div align="center">
+
+[![DivyaDrishti Demo](assets/images/demo-thumbnail.png)](assets/videos/divyadrishti-demo.mp4)
+*Click to watch the full application demonstration*
+
+![Demo GIF](assets/images/demo-preview.gif)
+*Quick preview of AI detection in action*
+
+</div>
+
 ### 🎯 Key Highlights
 - **Border Security Focus**: AI-powered detection of unauthorized crossings and illegal trails
 - **Real-time Threat Detection**: GPU-accelerated processing with 25-30 FPS performance
@@ -342,6 +366,42 @@ python main.py --check    # System diagnostics
 - **Faster Startup**: Removed test files and cache for quicker loading
 - **Simplified Paths**: Models now directly in main directory
 - **Auto-cleanup**: Old logs and temporary files automatically managed
+
+## 📸 Gallery
+
+### 🖼️ Interface Screenshots
+
+<div align="center">
+
+| Main Interface | Detection Panel | Settings Panel |
+|:---:|:---:|:---:|
+| ![Main](assets/images/interface-main.png) | ![Detection](assets/images/interface-detection.png) | ![Settings](assets/images/interface-settings.png) |
+| *Cyberpunk-themed main interface* | *Real-time detection panel* | *Configuration settings* |
+
+</div>
+
+### 🎯 Detection Examples
+
+<div align="center">
+
+| Person Detection | Trail Detection | Multi-Object Tracking |
+|:---:|:---:|:---:|
+| ![Person](assets/images/detection-person.png) | ![Trail](assets/images/detection-trail.png) | ![Multi](assets/images/detection-multi.png) |
+| *Person detection with tracking ID* | *Unauthorized trail detection* | *Multiple object tracking* |
+
+</div>
+
+### 🎬 Video Demonstrations
+
+<div align="center">
+
+| Feature | Preview | Description |
+|:---:|:---:|:---:|
+| **Real-time Detection** | ![Detection GIF](assets/images/demo-detection.gif) | Live AI detection in action |
+| **Object Tracking** | ![Tracking GIF](assets/images/demo-tracking.gif) | Persistent object tracking |
+| **Model Switching** | ![Models GIF](assets/images/demo-models.gif) | Dynamic model switching |
+
+</div>
 
 ## 📊 Performance Benchmarks
 

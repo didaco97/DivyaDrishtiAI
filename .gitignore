@@ -131,6 +131,19 @@ saved_videos/!.gitkeep
 !Testing Videos/*.mp4
 !Testing Videos/*.avi
 
+# Allow Assets for README documentation
+!assets/
+!assets/images/
+!assets/videos/
+!assets/images/*.png
+!assets/images/*.jpg
+!assets/images/*.jpeg
+!assets/images/*.gif
+!assets/images/*.svg
+!assets/videos/*.mp4
+!assets/videos/*.gif
+!assets/README.md
+
 # Allow essential model files for project to run
 # Comment out the lines below if you want to exclude large model files
 # *.pt
