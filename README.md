@@ -51,7 +51,7 @@
 
 | Demo Video 1 | Demo Video 2 |
 |:---:|:---:|
-| [![DivyaDrishti Demo 1](https://img.shields.io/badge/▶️_Watch_Demo_1-YouTube-red?style=for-the-badge&logo=youtube&logoColor=white)](YOUTUBE_URL_1_HERE) | [![DivyaDrishti Demo 2](https://img.shields.io/badge/▶️_Watch_Demo_2-YouTube-red?style=for-the-badge&logo=youtube&logoColor=white)](YOUTUBE_URL_2_HERE) |
+| [![DivyaDrishti Demo 1](https://img.shields.io/badge/▶️_Watch_Demo_1-YouTube-red?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/TrUjXULmhlQ) | [![DivyaDrishti Demo 2](https://img.shields.io/badge/▶️_Watch_Demo_2-YouTube-red?style=for-the-badge&logo=youtube&logoColor=white)](YOUTUBE_URL_2_HERE) |
 | *Application Overview & Features* | *AI Detection & Tracking Demo* |
 
 ### 📊 Project Presentation
@@ -69,18 +69,7 @@
 - **Tactical Command Interface**: Professional cyberpunk-themed interface for security operations
 - **Comprehensive Intelligence**: Advanced detection tracking and evidence logging
 
-### 📚 Documentation & Resources
 
-<div align="center">
-
-| Resource | Description | Link |
-|:---:|:---:|:---:|
-| 📊 **Project Presentation** | Comprehensive overview & technical details | [![PPT](https://img.shields.io/badge/View-PowerPoint-4285f4?style=flat-square&logo=googledrive)](https://drive.google.com/file/d/1f9MaNopNNxVizS0-yqrtbOhaFWTapv9L/view?usp=sharing) |
-| 🎬 **Demo Video 1** | Application overview & features | [![Demo1](https://img.shields.io/badge/Watch-YouTube-red?style=flat-square&logo=youtube)](YOUTUBE_URL_1_HERE) |
-| 🎯 **Demo Video 2** | AI detection & tracking demo | [![Demo2](https://img.shields.io/badge/Watch-YouTube-red?style=flat-square&logo=youtube)](YOUTUBE_URL_2_HERE) |
-| 📖 **Documentation** | Installation & usage guide | [![Docs](https://img.shields.io/badge/Read-Documentation-green?style=flat-square&logo=gitbook)](README.md) |
-
-</div>
 
 ## 🚀 Features
 
@@ -398,42 +387,6 @@ python main.py --check    # System diagnostics
 - **Faster Startup**: Removed test files and cache for quicker loading
 - **Simplified Paths**: Models now directly in main directory
 - **Auto-cleanup**: Old logs and temporary files automatically managed
-
-## 📸 Gallery
-
-### 🖼️ Interface Screenshots
-
-<div align="center">
-
-| Main Interface | Detection in Action | Tactical Map |
-|:---:|:---:|:---:|
-| ![Main](assets/images/main-interface.png) | ![Detection](assets/images/detection-example.png) | ![Map](assets/images/tactical-map.png) |
-| *Cyberpunk-themed surveillance interface* | *Real-time AI detection with tracking* | *Interactive border surveillance map* |
-
-</div>
-
-### 🎯 Detection Examples
-
-<div align="center">
-
-| Person Detection | Multi-Person Tracking | Border Surveillance |
-|:---:|:---:|:---:|
-| ![Person](assets/images/detection-example.png) | ![Multi](assets/images/detection-example.png) | ![Border](assets/images/tactical-map.png) |
-| *Real-time person detection with IDs* | *Multiple people tracking (21 FPS)* | *Strategic border monitoring* |
-
-</div>
-
-### 🎬 Video Demonstrations
-
-<div align="center">
-
-| Demo Video | Content | YouTube Link |
-|:---:|:---:|:---:|
-| **🎥 Demo 1** | Application Overview & Features | [![Watch Demo 1](https://img.shields.io/badge/▶️_Watch-YouTube-red?style=flat-square&logo=youtube)](YOUTUBE_URL_1_HERE) |
-| **🎯 Demo 2** | AI Detection & Tracking | [![Watch Demo 2](https://img.shields.io/badge/▶️_Watch-YouTube-red?style=flat-square&logo=youtube)](YOUTUBE_URL_2_HERE) |
-| **📊 Presentation** | Technical Overview | [![View PPT](https://img.shields.io/badge/📊_View-PowerPoint-4285f4?style=flat-square&logo=googledrive)](https://drive.google.com/file/d/1f9MaNopNNxVizS0-yqrtbOhaFWTapv9L/view?usp=sharing) |
-
-</div>
 
 ## 📊 Performance Benchmarks
 
