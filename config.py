@@ -107,16 +107,27 @@ SMART_FRAME_SELECTION = False  # DISABLED for tracking - breaks continuity
 FRAME_SIMILARITY_THRESHOLD = 0.95  # Threshold for frame similarity (0-1)
 ADAPTIVE_SKIP_FRAMES = False  # DISABLED for tracking - breaks continuity
 
-# GUI Settings - Cyberpunk Theme
-CYBERPUNK_THEME = {
-    "bg_color": "#0a0a0a",
-    "primary_color": "#00ff41",
-    "secondary_color": "#ff0080",
-    "accent_color": "#00d4ff",
-    "text_color": "#ffffff",
-    "button_color": "#1a1a1a",
-    "button_hover": "#2a2a2a",
-    "border_color": "#333333"
+# GUI Settings - Modern Light Theme
+MODERN_LIGHT_THEME = {
+    "bg_color": "#f8f9fa",           # Light gray background
+    "card_bg": "#ffffff",            # White card background
+    "text_color": "#2c3e50",        # Dark blue-gray text
+    "primary_color": "#3498db",      # Modern blue
+    "secondary_color": "#e74c3c",    # Modern red
+    "accent_color": "#9b59b6",       # Purple accent
+    "success_color": "#27ae60",      # Green
+    "warning_color": "#f39c12",      # Orange
+    "error_color": "#e74c3c",        # Red
+    "button_color": "#ffffff",       # White button
+    "button_hover": "#e3f2fd",       # Light blue hover
+    "button_active": "#bbdefb",      # Blue active
+    "border_color": "#dee2e6",       # Light border
+    "shadow_color": "#00000010",     # Subtle shadow
+    "gradient_start": "#74b9ff",     # Gradient start
+    "gradient_end": "#0984e3",       # Gradient end
+    "input_bg": "#ffffff",           # Input background
+    "input_border": "#ced4da",       # Input border
+    "input_focus": "#80bdff"         # Input focus
 }
 
 # Window Settings
@@ -126,8 +137,8 @@ RESIZABLE = True
 
 # Drone Video Settings
 DEFAULT_DRONE_FEED = 0
-DEFAULT_STREAM_URL = "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4"
-SUPPORTED_FORMATS = [".mp4", ".avi", ".mov", ".mkv", ".wmv", ".flv", ".webm"]
+DEFAULT_STREAM_URL = "sample_video.mp4"  # Local sample video
+SUPPORTED_FORMATS = [".mp4", ".avi", ".mov", ".mkv", ".wmv", ".flv"]
 
 # Logging Settings
 LOG_DETECTIONS = True

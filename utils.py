@@ -125,15 +125,20 @@ def test_stream_connection(stream_url, timeout=10):
     except Exception:
         return False
 
-def get_working_stream_urls():
-    """Get list of working demo stream URLs"""
-    return [
-        "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
-    ]
+def get_local_demo_videos():
+    """Get list of local demo video files"""
+    import os
+    demo_videos = []
+
+    # Check for local demo videos
+    video_dirs = ["Testing Videos", "assets/videos", "demo_videos"]
+    for video_dir in video_dirs:
+        if os.path.exists(video_dir):
+            for file in os.listdir(video_dir):
+                if file.lower().endswith(('.mp4', '.avi', '.mov', '.mkv')):
+                    demo_videos.append(os.path.join(video_dir, file))
+
+    return demo_videos
 
 def get_device_info():
     """Get device information for display"""

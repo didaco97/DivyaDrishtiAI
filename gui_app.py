@@ -11,7 +11,7 @@ import time
 from datetime import datetime
 from PIL import Image, ImageTk
 import numpy as np
-import webbrowser
+
 import tempfile
 import os
 
@@ -28,7 +28,11 @@ class DivyaDrishtiGUI:
         self.root = root
         self.root.title(config.WINDOW_TITLE)
         self.root.geometry(f"{config.WINDOW_WIDTH}x{config.WINDOW_HEIGHT}")
-        self.root.configure(bg=config.CYBERPUNK_THEME["bg_color"])
+        self.root.configure(bg=config.MODERN_LIGHT_THEME["bg_color"])
+
+        # Initialize hover effects system
+        self.hover_effects = {}
+        self.setup_modern_styling()
 
         # Initialize components
         self.detector = MultiModelDetector()
@@ -60,8 +64,8 @@ class DivyaDrishtiGUI:
         # Create directories
         utils.create_directories()
 
-        # Apply cyberpunk theme
-        self.setup_cyberpunk_theme()
+        # Apply modern light theme
+        self.setup_modern_theme()
 
         # Setup GUI
         self.setup_gui()
@@ -78,17 +82,105 @@ class DivyaDrishtiGUI:
         # Log system info
         utils.log_system_info()
 
-    def setup_cyberpunk_theme(self):
-        """Setup cyberpunk theme styling"""
-        # Use standard TTK widgets with manual styling
-        # Custom styles will be applied directly to widgets
+    def setup_modern_styling(self):
+        """Setup modern styling system for hover effects and animations"""
+        # Configure ttk styles for modern look
+        try:
+            import tkinter.ttk as ttk
+            self.style = ttk.Style()
+            self.style.theme_use('clam')  # Use clam theme as base
+
+            # Configure modern button style
+            self.style.configure('Modern.TButton',
+                               background=config.MODERN_LIGHT_THEME["button_color"],
+                               foreground=config.MODERN_LIGHT_THEME["text_color"],
+                               borderwidth=1,
+                               focuscolor='none',
+                               relief='flat')
+
+            self.style.map('Modern.TButton',
+                          background=[('active', config.MODERN_LIGHT_THEME["button_hover"]),
+                                    ('pressed', config.MODERN_LIGHT_THEME["button_active"])])
+        except:
+            pass  # Fallback to standard styling
+
+    def setup_modern_theme(self):
+        """Setup modern light theme styling"""
+        # This method will be called to apply theme-specific configurations
         pass
 
+    def add_hover_effect(self, widget, hover_bg=None, normal_bg=None, hover_fg=None, normal_fg=None):
+        """Add smooth hover effects to widgets with enhanced animations"""
+        if hover_bg is None:
+            hover_bg = config.MODERN_LIGHT_THEME["button_hover"]
+        if normal_bg is None:
+            normal_bg = config.MODERN_LIGHT_THEME["button_color"]
+        if hover_fg is None:
+            hover_fg = config.MODERN_LIGHT_THEME["text_color"]
+        if normal_fg is None:
+            normal_fg = config.MODERN_LIGHT_THEME["text_color"]
+
+        def on_enter(event):
+            widget.configure(bg=hover_bg, fg=hover_fg, relief='raised', bd=1)
+
+        def on_leave(event):
+            widget.configure(bg=normal_bg, fg=normal_fg, relief='flat', bd=0)
+
+        def on_click(event):
+            widget.configure(relief='sunken', bd=1)
+            widget.after(100, lambda: widget.configure(relief='raised', bd=1))
+
+        widget.bind("<Enter>", on_enter)
+        widget.bind("<Leave>", on_leave)
+        widget.bind("<Button-1>", on_click)
+
+        # Store original colors
+        self.hover_effects[widget] = {
+            'normal_bg': normal_bg,
+            'normal_fg': normal_fg,
+            'hover_bg': hover_bg,
+            'hover_fg': hover_fg
+        }
+
+    def add_card_shadow_effect(self, widget):
+        """Add subtle shadow effect to card-like widgets"""
+        # Create a shadow frame behind the widget
+        shadow_frame = tk.Frame(widget.master, bg='#00000020', height=2)
+        shadow_frame.place(in_=widget, x=2, y=2, relwidth=1, relheight=1)
+        widget.lift()  # Bring widget to front
+
+    def create_modern_button(self, parent, text, command=None, bg_color=None, hover_color=None, fg_color=None, **kwargs):
+        """Create a modern styled button with hover effects"""
+        if bg_color is None:
+            bg_color = config.MODERN_LIGHT_THEME["button_color"]
+        if hover_color is None:
+            hover_color = config.MODERN_LIGHT_THEME["button_hover"]
+        if fg_color is None:
+            fg_color = config.MODERN_LIGHT_THEME["text_color"]
+
+        # Remove fg from kwargs if present to avoid conflict
+        kwargs.pop('fg', None)
+
+        button = tk.Button(parent, text=text, command=command,
+                          bg=bg_color,
+                          fg=fg_color,
+                          relief='flat',
+                          bd=0,
+                          padx=15,
+                          pady=8,
+                          cursor='hand2',
+                          **kwargs)
+
+        # Add hover effect
+        self.add_hover_effect(button, hover_color, bg_color, fg_color, fg_color)
+
+        return button
+
     def setup_gui(self):
-        """Setup the main GUI layout"""
-        # Main container
-        main_frame = tk.Frame(self.root, bg=config.CYBERPUNK_THEME["bg_color"])
-        main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        """Setup the main GUI layout with modern styling"""
+        # Main container with modern styling
+        main_frame = tk.Frame(self.root, bg=config.MODERN_LIGHT_THEME["bg_color"])
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=15, pady=15)
 
         # Header
         self.setup_header(main_frame)
@@ -106,54 +198,77 @@ class DivyaDrishtiGUI:
         self.setup_status_bar(main_frame)
 
     def setup_header(self, parent):
-        """Setup application header"""
-        header_frame = tk.Frame(parent, bg=config.CYBERPUNK_THEME["bg_color"])
-        header_frame.pack(fill=tk.X, pady=(0, 15))
+        """Setup application header with modern styling"""
+        # Header container with card-like appearance
+        header_frame = tk.Frame(parent, bg=config.MODERN_LIGHT_THEME["card_bg"],
+                               relief='flat', bd=1)
+        header_frame.pack(fill=tk.X, pady=(0, 20), padx=5)
 
-        # Title
-        title_label = tk.Label(header_frame,
-                              text="🎯 DIVYADRISHTI",
-                              font=('Consolas', 24, 'bold'),
-                              fg=config.CYBERPUNK_THEME["primary_color"],
-                              bg=config.CYBERPUNK_THEME["bg_color"])
+        # Add subtle border effect
+        border_frame = tk.Frame(header_frame, bg=config.MODERN_LIGHT_THEME["border_color"], height=1)
+        border_frame.pack(fill=tk.X, side=tk.BOTTOM)
+
+        # Content frame with padding
+        content_frame = tk.Frame(header_frame, bg=config.MODERN_LIGHT_THEME["card_bg"])
+        content_frame.pack(fill=tk.X, padx=20, pady=15)
+
+        # Title with modern typography
+        title_label = tk.Label(content_frame,
+                              text="🔍 DivyaDrishti",
+                              font=('Segoe UI', 28, 'bold'),
+                              fg=config.MODERN_LIGHT_THEME["primary_color"],
+                              bg=config.MODERN_LIGHT_THEME["card_bg"])
         title_label.pack(side=tk.LEFT)
 
-        # Subtitle
-        subtitle_label = tk.Label(header_frame,
-                                 text="AI DRONE SURVEILLANCE SYSTEM",
-                                 font=('Consolas', 12),
-                                 fg=config.CYBERPUNK_THEME["accent_color"],
-                                 bg=config.CYBERPUNK_THEME["bg_color"])
-        subtitle_label.pack(side=tk.LEFT, padx=(20, 0))
+        # Subtitle with modern styling
+        subtitle_label = tk.Label(content_frame,
+                                 text="AI Surveillance System",
+                                 font=('Segoe UI', 14),
+                                 fg=config.MODERN_LIGHT_THEME["text_color"],
+                                 bg=config.MODERN_LIGHT_THEME["card_bg"])
+        subtitle_label.pack(side=tk.LEFT, padx=(15, 0), pady=(5, 0))
 
-        # Version info
-        version_label = tk.Label(header_frame,
-                                text=f"v{config.APP_VERSION}",
-                                font=('Consolas', 10),
-                                fg=config.CYBERPUNK_THEME["secondary_color"],
-                                bg=config.CYBERPUNK_THEME["bg_color"])
-        version_label.pack(side=tk.RIGHT)
+        # Version badge
+        version_frame = tk.Frame(content_frame, bg=config.MODERN_LIGHT_THEME["accent_color"],
+                                relief='flat')
+        version_frame.pack(side=tk.RIGHT, padx=(0, 5))
+
+        version_label = tk.Label(version_frame,
+                                text=f" v{config.APP_VERSION} ",
+                                font=('Segoe UI', 10, 'bold'),
+                                fg='white',
+                                bg=config.MODERN_LIGHT_THEME["accent_color"])
+        version_label.pack(padx=8, pady=4)
 
     def setup_control_panel(self, parent):
-        """Setup control panel with cyberpunk-styled buttons"""
-        control_frame = tk.LabelFrame(parent, text="🎮 CONTROL MATRIX",
-                                     bg=config.CYBERPUNK_THEME["bg_color"],
-                                     fg=config.CYBERPUNK_THEME["primary_color"],
-                                     font=('Consolas', 11, 'bold'))
-        control_frame.pack(fill=tk.X, pady=(0, 15))
+        """Setup control panel with modern styling"""
+        # Control panel container with card styling
+        control_frame = tk.Frame(parent, bg=config.MODERN_LIGHT_THEME["card_bg"],
+                                relief='flat', bd=1)
+        control_frame.pack(fill=tk.X, pady=(0, 20), padx=5)
 
-        # Main controls row
-        main_controls = tk.Frame(control_frame, bg=config.CYBERPUNK_THEME["bg_color"])
-        main_controls.pack(fill=tk.X, padx=10, pady=10)
+        # Header for control panel
+        header_frame = tk.Frame(control_frame, bg=config.MODERN_LIGHT_THEME["primary_color"])
+        header_frame.pack(fill=tk.X)
 
-        # Model selection
-        model_frame = tk.Frame(main_controls, bg=config.CYBERPUNK_THEME["bg_color"])
-        model_frame.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        header_label = tk.Label(header_frame, text="🎮 Control Panel",
+                               font=('Segoe UI', 12, 'bold'),
+                               fg='white',
+                               bg=config.MODERN_LIGHT_THEME["primary_color"])
+        header_label.pack(pady=8)
 
-        tk.Label(model_frame, text="🎯 MODEL:",
-                font=('Consolas', 10, 'bold'),
-                fg=config.CYBERPUNK_THEME["primary_color"],
-                bg=config.CYBERPUNK_THEME["bg_color"]).pack(side=tk.LEFT)
+        # Main controls row with padding
+        main_controls = tk.Frame(control_frame, bg=config.MODERN_LIGHT_THEME["card_bg"])
+        main_controls.pack(fill=tk.X, padx=20, pady=15)
+
+        # Model selection with modern styling
+        model_frame = tk.Frame(main_controls, bg=config.MODERN_LIGHT_THEME["card_bg"])
+        model_frame.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 15))
+
+        tk.Label(model_frame, text="🎯 Model:",
+                font=('Segoe UI', 10, 'bold'),
+                fg=config.MODERN_LIGHT_THEME["text_color"],
+                bg=config.MODERN_LIGHT_THEME["card_bg"]).pack(side=tk.LEFT, pady=5)
 
         # Get model list from detector
         model_options = [display for key, display in self.detector.get_model_list_for_gui()]
@@ -171,14 +286,14 @@ class DivyaDrishtiGUI:
         model_combo.pack(side=tk.LEFT, padx=(10, 0))
         model_combo.bind("<<ComboboxSelected>>", self.on_model_change)
 
-        # Drone feed source selection
-        source_frame = tk.Frame(main_controls, bg=config.CYBERPUNK_THEME["bg_color"])
-        source_frame.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(20, 0))
+        # Drone feed source selection with modern styling
+        source_frame = tk.Frame(main_controls, bg=config.MODERN_LIGHT_THEME["card_bg"])
+        source_frame.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(15, 15))
 
-        tk.Label(source_frame, text="🚁 DRONE FEED:",
-                font=('Consolas', 10, 'bold'),
-                fg=config.CYBERPUNK_THEME["primary_color"],
-                bg=config.CYBERPUNK_THEME["bg_color"]).pack(side=tk.LEFT)
+        tk.Label(source_frame, text="📹 Video Source:",
+                font=('Segoe UI', 10, 'bold'),
+                fg=config.MODERN_LIGHT_THEME["text_color"],
+                bg=config.MODERN_LIGHT_THEME["card_bg"]).pack(side=tk.LEFT, pady=5)
 
         self.source_var = tk.StringVar(value="Alpha Drone")
         source_combo = ttk.Combobox(source_frame, textvariable=self.source_var,
@@ -187,236 +302,255 @@ class DivyaDrishtiGUI:
         source_combo.pack(side=tk.LEFT, padx=(10, 0))
         source_combo.bind("<<ComboboxSelected>>", self.on_source_change)
 
-        # File selection button
-        self.file_button = tk.Button(source_frame, text="📁 SELECT FILE",
-                                    command=self.select_video_file,
-                                    font=('Consolas', 9, 'bold'),
-                                    fg=config.CYBERPUNK_THEME["accent_color"],
-                                    bg=config.CYBERPUNK_THEME["button_color"],
-                                    state=tk.DISABLED)
+        # File selection button with modern styling
+        self.file_button = self.create_modern_button(source_frame, "📁 Select File",
+                                                    command=self.select_video_file,
+                                                    font=('Segoe UI', 9, 'bold'),
+                                                    state=tk.DISABLED)
         self.file_button.pack(side=tk.LEFT, padx=(10, 0))
 
-        # Action buttons
-        button_frame = tk.Frame(main_controls, bg=config.CYBERPUNK_THEME["bg_color"])
-        button_frame.pack(side=tk.RIGHT)
+        # Action buttons with modern styling
+        button_frame = tk.Frame(main_controls, bg=config.MODERN_LIGHT_THEME["card_bg"])
+        button_frame.pack(side=tk.RIGHT, padx=(15, 0))
 
-        self.start_button = tk.Button(button_frame, text="🚀 START SURVEILLANCE",
-                                     command=self.start_detection,
-                                     font=('Consolas', 11, 'bold'),
-                                     fg=config.CYBERPUNK_THEME["text_color"],
-                                     bg=config.CYBERPUNK_THEME["primary_color"],
-                                     activebackground=config.CYBERPUNK_THEME["accent_color"])
+        self.start_button = self.create_modern_button(button_frame, "🚀 Start Detection",
+                                                     command=self.start_detection,
+                                                     bg_color=config.MODERN_LIGHT_THEME["success_color"],
+                                                     hover_color="#229954",
+                                                     fg_color='white',
+                                                     font=('Segoe UI', 11, 'bold'))
         self.start_button.pack(side=tk.LEFT, padx=(0, 10))
 
-        self.stop_button = tk.Button(button_frame, text="⏹️ STOP SURVEILLANCE",
-                                    command=self.stop_detection,
-                                    font=('Consolas', 11, 'bold'),
-                                    fg=config.CYBERPUNK_THEME["text_color"],
-                                    bg=config.CYBERPUNK_THEME["secondary_color"],
-                                    state=tk.DISABLED)
+        self.stop_button = self.create_modern_button(button_frame, "⏹️ Stop Detection",
+                                                    command=self.stop_detection,
+                                                    bg_color=config.MODERN_LIGHT_THEME["error_color"],
+                                                    hover_color="#c0392b",
+                                                    fg_color='white',
+                                                    font=('Segoe UI', 11, 'bold'),
+                                                    state=tk.DISABLED)
         self.stop_button.pack(side=tk.LEFT, padx=(0, 10))
 
         # Optimization button
-        self.optimization_button = tk.Button(button_frame, text="🚀 OPTIMIZE",
-                                           command=self.show_optimization_panel,
-                                           font=('Consolas', 11, 'bold'),
-                                           fg=config.CYBERPUNK_THEME["text_color"],
-                                           bg=config.CYBERPUNK_THEME["accent_color"],
-                                           activebackground=config.CYBERPUNK_THEME["primary_color"])
+        self.optimization_button = self.create_modern_button(button_frame, "⚙️ Optimize",
+                                                           command=self.show_optimization_panel,
+                                                           bg_color=config.MODERN_LIGHT_THEME["accent_color"],
+                                                           hover_color="#8e44ad",
+                                                           fg_color='white',
+                                                           font=('Segoe UI', 11, 'bold'))
         self.optimization_button.pack(side=tk.LEFT, padx=(0, 10))
 
-        # Feature toggles row
-        toggles_frame = tk.Frame(control_frame, bg=config.CYBERPUNK_THEME["bg_color"])
-        toggles_frame.pack(fill=tk.X, padx=10, pady=(0, 10))
+        # Feature toggles row with modern styling
+        toggles_frame = tk.Frame(control_frame, bg=config.MODERN_LIGHT_THEME["card_bg"])
+        toggles_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
 
         # AI Analysis toggle
-        self.segmentation_button = tk.Button(toggles_frame,
-                                           text="🤖 AI ANALYSIS: OFF",
-                                           command=self.toggle_segmentation,
-                                           font=('Consolas', 10, 'bold'),
-                                           fg=config.CYBERPUNK_THEME["text_color"],
-                                           bg=config.CYBERPUNK_THEME["button_color"])
+        self.segmentation_button = self.create_modern_button(toggles_frame,
+                                                           "🤖 AI Analysis: OFF",
+                                                           command=self.toggle_segmentation,
+                                                           font=('Segoe UI', 10, 'bold'))
         self.segmentation_button.pack(side=tk.LEFT, padx=(0, 10))
 
         # Auto-record toggle
-        self.autosave_button = tk.Button(toggles_frame,
-                                       text="📹 AUTO-RECORD: OFF",
-                                       command=self.toggle_autosave,
-                                       font=('Consolas', 10, 'bold'),
-                                       fg=config.CYBERPUNK_THEME["text_color"],
-                                       bg=config.CYBERPUNK_THEME["button_color"])
+        self.autosave_button = self.create_modern_button(toggles_frame,
+                                                       "📹 Auto-Record: OFF",
+                                                       command=self.toggle_autosave,
+                                                       font=('Segoe UI', 10, 'bold'))
         self.autosave_button.pack(side=tk.LEFT, padx=(0, 10))
 
         # Tracking toggle
         self.tracking_enabled = config.USE_TRACKING
-        self.tracking_button = tk.Button(toggles_frame,
-                                       text=f"🎯 TRACKING: {'ON' if self.tracking_enabled else 'OFF'}",
-                                       command=self.toggle_tracking,
-                                       font=('Consolas', 10, 'bold'),
-                                       fg=config.CYBERPUNK_THEME["text_color"],
-                                       bg=config.CYBERPUNK_THEME["primary_color"] if self.tracking_enabled else config.CYBERPUNK_THEME["button_color"])
+        tracking_bg = config.MODERN_LIGHT_THEME["primary_color"] if self.tracking_enabled else config.MODERN_LIGHT_THEME["button_color"]
+        tracking_fg = 'white' if self.tracking_enabled else config.MODERN_LIGHT_THEME["text_color"]
+
+        self.tracking_button = self.create_modern_button(toggles_frame,
+                                                       f"🎯 Tracking: {'ON' if self.tracking_enabled else 'OFF'}",
+                                                       command=self.toggle_tracking,
+                                                       bg_color=tracking_bg,
+                                                       fg_color=tracking_fg,
+                                                       font=('Segoe UI', 10, 'bold'))
         self.tracking_button.pack(side=tk.LEFT, padx=(0, 10))
 
-        # Confidence slider
-        confidence_frame = tk.Frame(toggles_frame, bg=config.CYBERPUNK_THEME["bg_color"])
-        confidence_frame.pack(side=tk.RIGHT)
+        # Confidence slider with modern styling
+        confidence_frame = tk.Frame(toggles_frame, bg=config.MODERN_LIGHT_THEME["card_bg"])
+        confidence_frame.pack(side=tk.RIGHT, padx=(20, 0))
 
-        tk.Label(confidence_frame, text="🎚️ CONFIDENCE:",
-                font=('Consolas', 10, 'bold'),
-                fg=config.CYBERPUNK_THEME["primary_color"],
-                bg=config.CYBERPUNK_THEME["bg_color"]).pack(side=tk.LEFT)
+        tk.Label(confidence_frame, text="🎚️ Confidence:",
+                font=('Segoe UI', 10, 'bold'),
+                fg=config.MODERN_LIGHT_THEME["text_color"],
+                bg=config.MODERN_LIGHT_THEME["card_bg"]).pack(side=tk.LEFT, pady=5)
 
         self.confidence_var = tk.DoubleVar(value=config.CONFIDENCE_THRESHOLD)
-        confidence_scale = tk.Scale(confidence_frame, from_=0.05, to=1.0,  # Lower minimum for better detection
+        confidence_scale = tk.Scale(confidence_frame, from_=0.05, to=1.0,
                                   variable=self.confidence_var, orient=tk.HORIZONTAL,
                                   length=150, resolution=0.01,
-                                  bg=config.CYBERPUNK_THEME["bg_color"],
-                                  fg=config.CYBERPUNK_THEME["primary_color"],
-                                  activebackground=config.CYBERPUNK_THEME["accent_color"])
+                                  bg=config.MODERN_LIGHT_THEME["card_bg"],
+                                  fg=config.MODERN_LIGHT_THEME["primary_color"],
+                                  activebackground=config.MODERN_LIGHT_THEME["primary_color"],
+                                  troughcolor=config.MODERN_LIGHT_THEME["border_color"],
+                                  highlightthickness=0,
+                                  relief='flat')
         confidence_scale.pack(side=tk.LEFT, padx=(10, 0))
 
         self.confidence_label = tk.Label(confidence_frame, text=f"{config.CONFIDENCE_THRESHOLD:.2f}",
-                                       font=('Consolas', 10, 'bold'),
-                                       fg=config.CYBERPUNK_THEME["accent_color"],
-                                       bg=config.CYBERPUNK_THEME["bg_color"])
-        self.confidence_label.pack(side=tk.LEFT, padx=(5, 0))
+                                       font=('Segoe UI', 10, 'bold'),
+                                       fg=config.MODERN_LIGHT_THEME["primary_color"],
+                                       bg=config.MODERN_LIGHT_THEME["card_bg"])
+        self.confidence_label.pack(side=tk.LEFT, padx=(8, 0))
 
         confidence_scale.bind("<Motion>", self.update_confidence_label)
 
     def setup_video_panels(self, parent):
-        """Setup video display panels with map"""
-        video_frame = tk.Frame(parent, bg=config.CYBERPUNK_THEME["bg_color"])
-        video_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 15))
+        """Setup video display panels with modern styling"""
+        video_frame = tk.Frame(parent, bg=config.MODERN_LIGHT_THEME["bg_color"])
+        video_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 20))
 
-        # Main video feeds (left and center)
-        feeds_container = tk.Frame(video_frame, bg=config.CYBERPUNK_THEME["bg_color"])
-        feeds_container.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 10))
+        # Main video feeds container with card styling
+        feeds_container = tk.Frame(video_frame, bg=config.MODERN_LIGHT_THEME["card_bg"],
+                                  relief='flat', bd=1)
+        feeds_container.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 15))
 
-        # Left panel - Alpha Drone Feed (proper size)
-        left_frame = tk.LabelFrame(feeds_container, text="🚁 ALPHA DRONE FEED",
-                                  bg=config.CYBERPUNK_THEME["bg_color"],
-                                  fg=config.CYBERPUNK_THEME["primary_color"],
-                                  font=('Consolas', 11, 'bold'))
-        left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 5))
+        # Left panel - Raw Video Feed
+        left_frame = tk.LabelFrame(feeds_container, text="📹 Raw Video Feed",
+                                  bg=config.MODERN_LIGHT_THEME["card_bg"],
+                                  fg=config.MODERN_LIGHT_THEME["text_color"],
+                                  font=('Segoe UI', 11, 'bold'))
+        left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
 
-        self.original_label = tk.Label(left_frame, bg=config.CYBERPUNK_THEME["bg_color"])
-        self.original_label.pack(expand=True, fill=tk.BOTH)
+        self.original_label = tk.Label(left_frame, bg='black')
+        self.original_label.pack(expand=True, fill=tk.BOTH, padx=5, pady=5)
 
-        # Right panel - AI Analysis (proper size)
-        right_frame = tk.LabelFrame(feeds_container, text="🤖 AI SURVEILLANCE ANALYSIS",
-                                   bg=config.CYBERPUNK_THEME["bg_color"],
-                                   fg=config.CYBERPUNK_THEME["primary_color"],
-                                   font=('Consolas', 11, 'bold'))
-        right_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=(5, 0))
+        # Right panel - AI Detection Analysis
+        right_frame = tk.LabelFrame(feeds_container, text="🤖 AI Detection Analysis",
+                                   bg=config.MODERN_LIGHT_THEME["card_bg"],
+                                   fg=config.MODERN_LIGHT_THEME["text_color"],
+                                   font=('Segoe UI', 11, 'bold'))
+        right_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=10, pady=10)
 
-        self.processed_label = tk.Label(right_frame, bg=config.CYBERPUNK_THEME["bg_color"])
-        self.processed_label.pack(expand=True, fill=tk.BOTH)
+        self.processed_label = tk.Label(right_frame, bg='black')
+        self.processed_label.pack(expand=True, fill=tk.BOTH, padx=5, pady=5)
 
-        # Right side - Big Map Button Panel
-        map_frame = tk.Frame(video_frame, bg=config.CYBERPUNK_THEME["bg_color"])
-        map_frame.pack(side=tk.RIGHT, fill=tk.Y, padx=(10, 0))
-        map_frame.config(width=300)  # Fixed width for button panel
+        # Right side - Statistics Panel
+        map_frame = tk.Frame(video_frame, bg=config.MODERN_LIGHT_THEME["card_bg"],
+                            relief='flat', bd=1)
+        map_frame.pack(side=tk.RIGHT, fill=tk.Y, padx=(0, 5))
+        map_frame.config(width=300)  # Fixed width for stats panel
 
-        # Big Tactical Map Button
-        self.map_button = tk.Button(map_frame,
-                                   text="🗺️\n\nOPEN\nTACTICAL\nMAP\n\nINDIA-PAKISTAN\nBORDER\n\n🚁 DRONE\nSURVEILLANCE",
-                                   command=self.open_tactical_map,
-                                   font=('Consolas', 14, 'bold'),
-                                   fg=config.CYBERPUNK_THEME["text_color"],
-                                   bg=config.CYBERPUNK_THEME["primary_color"],
-                                   activebackground=config.CYBERPUNK_THEME["accent_color"],
-                                   relief=tk.RAISED,
-                                   bd=3,
-                                   cursor="hand2")
-        self.map_button.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        # Detection Statistics Panel with modern styling
+        stats_header = tk.Frame(map_frame, bg=config.MODERN_LIGHT_THEME["primary_color"])
+        stats_header.pack(fill=tk.X)
 
-        # Add hover effects
-        def on_enter(e):
-            self.map_button.config(bg=config.CYBERPUNK_THEME["accent_color"])
+        stats_title = tk.Label(stats_header, text="📊 Detection Statistics",
+                              font=('Segoe UI', 12, 'bold'),
+                              fg='white',
+                              bg=config.MODERN_LIGHT_THEME["primary_color"])
+        stats_title.pack(pady=8)
 
-        def on_leave(e):
-            self.map_button.config(bg=config.CYBERPUNK_THEME["primary_color"])
-
-        self.map_button.bind("<Enter>", on_enter)
-        self.map_button.bind("<Leave>", on_leave)
+        stats_content = tk.Label(map_frame,
+                                text="Real-time YOLO\nAnalysis Dashboard\n\n🎯 Object Detection\n📈 Performance Metrics\n⚡ Live Monitoring",
+                                font=('Segoe UI', 10),
+                                fg=config.MODERN_LIGHT_THEME["text_color"],
+                                bg=config.MODERN_LIGHT_THEME["card_bg"],
+                                justify=tk.CENTER)
+        stats_content.pack(fill=tk.BOTH, expand=True, padx=15, pady=15)
 
     def setup_info_panels(self, parent):
-        """Setup information display panels"""
-        info_frame = tk.Frame(parent, bg=config.CYBERPUNK_THEME["bg_color"])
-        info_frame.pack(fill=tk.X, pady=(0, 15))
+        """Setup information display panels with modern styling"""
+        info_frame = tk.Frame(parent, bg=config.MODERN_LIGHT_THEME["bg_color"])
+        info_frame.pack(fill=tk.X, pady=(0, 20))
 
-        # Detection log panel
-        log_frame = tk.LabelFrame(info_frame, text="🎯 DETECTION NOTIFICATIONS",
-                                 bg=config.CYBERPUNK_THEME["bg_color"],
-                                 fg=config.CYBERPUNK_THEME["primary_color"],
-                                 font=('Consolas', 11, 'bold'))
-        log_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 5))
+        # Detection log panel with card styling
+        log_frame = tk.Frame(info_frame, bg=config.MODERN_LIGHT_THEME["card_bg"],
+                            relief='flat', bd=1)
+        log_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 10))
+
+        # Log header
+        log_header = tk.Frame(log_frame, bg=config.MODERN_LIGHT_THEME["success_color"])
+        log_header.pack(fill=tk.X)
+
+        log_title = tk.Label(log_header, text="🎯 Detection Log",
+                            font=('Segoe UI', 11, 'bold'),
+                            fg='white',
+                            bg=config.MODERN_LIGHT_THEME["success_color"])
+        log_title.pack(pady=6)
 
         # Create text widget for logs
         self.log_text = tk.Text(log_frame, height=8, wrap=tk.WORD,
-                               bg=config.CYBERPUNK_THEME["bg_color"],
-                               fg=config.CYBERPUNK_THEME["text_color"],
-                               font=('Consolas', 9),
-                               insertbackground=config.CYBERPUNK_THEME["primary_color"])
+                               bg=config.MODERN_LIGHT_THEME["card_bg"],
+                               fg=config.MODERN_LIGHT_THEME["text_color"],
+                               font=('Segoe UI', 9),
+                               insertbackground=config.MODERN_LIGHT_THEME["primary_color"],
+                               relief='flat',
+                               bd=0)
 
         log_scrollbar = tk.Scrollbar(log_frame, orient=tk.VERTICAL, command=self.log_text.yview)
         self.log_text.configure(yscrollcommand=log_scrollbar.set)
 
-        self.log_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        log_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.log_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
+        log_scrollbar.pack(side=tk.RIGHT, fill=tk.Y, pady=10)
 
-        # Performance panel
-        perf_frame = tk.LabelFrame(info_frame, text="⚡ PERFORMANCE",
-                                  bg=config.CYBERPUNK_THEME["bg_color"],
-                                  fg=config.CYBERPUNK_THEME["primary_color"],
-                                  font=('Consolas', 11, 'bold'))
-        perf_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=(5, 0))
+        # Performance panel with card styling
+        perf_frame = tk.Frame(info_frame, bg=config.MODERN_LIGHT_THEME["card_bg"],
+                             relief='flat', bd=1)
+        perf_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=(10, 0))
+
+        # Performance header
+        perf_header = tk.Frame(perf_frame, bg=config.MODERN_LIGHT_THEME["warning_color"])
+        perf_header.pack(fill=tk.X)
+
+        perf_title = tk.Label(perf_header, text="⚡ Performance",
+                             font=('Segoe UI', 11, 'bold'),
+                             fg='white',
+                             bg=config.MODERN_LIGHT_THEME["warning_color"])
+        perf_title.pack(pady=6)
 
         self.perf_text = tk.Text(perf_frame, height=8, wrap=tk.WORD,
-                                bg=config.CYBERPUNK_THEME["bg_color"],
-                                fg=config.CYBERPUNK_THEME["text_color"],
-                                font=('Consolas', 9),
-                                insertbackground=config.CYBERPUNK_THEME["primary_color"])
+                                bg=config.MODERN_LIGHT_THEME["card_bg"],
+                                fg=config.MODERN_LIGHT_THEME["text_color"],
+                                font=('Segoe UI', 9),
+                                insertbackground=config.MODERN_LIGHT_THEME["primary_color"],
+                                relief='flat',
+                                bd=0)
 
         perf_scrollbar = tk.Scrollbar(perf_frame, orient=tk.VERTICAL, command=self.perf_text.yview)
         self.perf_text.configure(yscrollcommand=perf_scrollbar.set)
 
-        self.perf_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        perf_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.perf_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
+        perf_scrollbar.pack(side=tk.RIGHT, fill=tk.Y, pady=10)
 
     def setup_status_bar(self, parent):
-        """Setup status bar"""
-        status_frame = tk.Frame(parent, bg=config.CYBERPUNK_THEME["bg_color"])
-        status_frame.pack(fill=tk.X)
+        """Setup status bar with modern styling"""
+        status_frame = tk.Frame(parent, bg=config.MODERN_LIGHT_THEME["card_bg"],
+                               relief='flat', bd=1)
+        status_frame.pack(fill=tk.X, pady=(10, 0))
 
-        # Status label
-        self.status_label = tk.Label(status_frame, text="🟢 DRONE SURVEILLANCE READY",
-                                   font=('Consolas', 10, 'bold'),
-                                   fg=config.CYBERPUNK_THEME["primary_color"],
-                                   bg=config.CYBERPUNK_THEME["bg_color"])
-        self.status_label.pack(side=tk.LEFT)
+        # Status label with modern styling
+        self.status_label = tk.Label(status_frame, text="🟢 System Ready",
+                                   font=('Segoe UI', 10, 'bold'),
+                                   fg=config.MODERN_LIGHT_THEME["success_color"],
+                                   bg=config.MODERN_LIGHT_THEME["card_bg"])
+        self.status_label.pack(side=tk.LEFT, padx=15, pady=8)
 
-        # Device info
+        # Device info with modern styling
         device_info = utils.get_device_info()
         self.device_label = tk.Label(status_frame, text=f"🖥️ {device_info}",
-                                   font=('Consolas', 10),
-                                   fg=config.CYBERPUNK_THEME["accent_color"],
-                                   bg=config.CYBERPUNK_THEME["bg_color"])
-        self.device_label.pack(side=tk.RIGHT, padx=(10, 0))
+                                   font=('Segoe UI', 9),
+                                   fg=config.MODERN_LIGHT_THEME["accent_color"],
+                                   bg=config.MODERN_LIGHT_THEME["card_bg"])
+        self.device_label.pack(side=tk.RIGHT, padx=(10, 15), pady=8)
 
-        # FPS display
+        # FPS display with modern styling
         self.fps_label = tk.Label(status_frame, text="📊 FPS: 0",
-                                font=('Consolas', 10),
-                                fg=config.CYBERPUNK_THEME["secondary_color"],
-                                bg=config.CYBERPUNK_THEME["bg_color"])
-        self.fps_label.pack(side=tk.RIGHT, padx=(10, 0))
+                                font=('Segoe UI', 9),
+                                fg=config.MODERN_LIGHT_THEME["primary_color"],
+                                bg=config.MODERN_LIGHT_THEME["card_bg"])
+        self.fps_label.pack(side=tk.RIGHT, padx=(10, 0), pady=8)
 
-        # Frame count
-        self.frame_label = tk.Label(status_frame, text="🎬 FRAMES: 0",
-                                  font=('Consolas', 10),
-                                  fg=config.CYBERPUNK_THEME["text_color"],
-                                  bg=config.CYBERPUNK_THEME["bg_color"])
-        self.frame_label.pack(side=tk.RIGHT, padx=(10, 0))
+        # Frame count with modern styling
+        self.frame_label = tk.Label(status_frame, text="🎬 Frames: 0",
+                                  font=('Segoe UI', 9),
+                                  fg=config.MODERN_LIGHT_THEME["text_color"],
+                                  bg=config.MODERN_LIGHT_THEME["card_bg"])
+        self.frame_label.pack(side=tk.RIGHT, padx=(10, 0), pady=8)
 
     def on_model_change(self, event=None):
         """Handle model change"""
@@ -512,13 +646,14 @@ class DivyaDrishtiGUI:
         # Update detector mode
         success = self.detector.switch_mode(mode)
         if success:
-            button_text = f"🤖 AI ANALYSIS: {'ON' if self.segmentation_enabled else 'OFF'}"
+            button_text = f"🤖 AI Analysis: {'ON' if self.segmentation_enabled else 'OFF'}"
             self.segmentation_button.config(text=button_text)
 
             if self.segmentation_enabled:
-                self.segmentation_button.config(bg=config.CYBERPUNK_THEME["primary_color"])
+                self.segmentation_button.config(bg=config.MODERN_LIGHT_THEME["primary_color"], fg='white')
             else:
-                self.segmentation_button.config(bg=config.CYBERPUNK_THEME["button_color"])
+                self.segmentation_button.config(bg=config.MODERN_LIGHT_THEME["button_color"],
+                                               fg=config.MODERN_LIGHT_THEME["text_color"])
 
             self.update_status(f"🤖 AI analysis {'enabled' if self.segmentation_enabled else 'disabled'}")
         else:
@@ -530,13 +665,14 @@ class DivyaDrishtiGUI:
     def toggle_autosave(self):
         """Toggle auto-record surveillance"""
         self.auto_save_enabled = not self.auto_save_enabled
-        button_text = f"📹 AUTO-RECORD: {'ON' if self.auto_save_enabled else 'OFF'}"
+        button_text = f"📹 Auto-Record: {'ON' if self.auto_save_enabled else 'OFF'}"
         self.autosave_button.config(text=button_text)
 
         if self.auto_save_enabled:
-            self.autosave_button.config(bg=config.CYBERPUNK_THEME["primary_color"])
+            self.autosave_button.config(bg=config.MODERN_LIGHT_THEME["primary_color"], fg='white')
         else:
-            self.autosave_button.config(bg=config.CYBERPUNK_THEME["button_color"])
+            self.autosave_button.config(bg=config.MODERN_LIGHT_THEME["button_color"],
+                                       fg=config.MODERN_LIGHT_THEME["text_color"])
 
         self.update_status(f"📹 Auto-record {'enabled' if self.auto_save_enabled else 'disabled'}")
 
@@ -548,14 +684,15 @@ class DivyaDrishtiGUI:
         success = self.detector.enable_tracking(self.tracking_enabled)
 
         if success:
-            button_text = f"🎯 TRACKING: {'ON' if self.tracking_enabled else 'OFF'}"
+            button_text = f"🎯 Tracking: {'ON' if self.tracking_enabled else 'OFF'}"
             self.tracking_button.config(text=button_text)
 
             if self.tracking_enabled:
-                self.tracking_button.config(bg=config.CYBERPUNK_THEME["primary_color"])
+                self.tracking_button.config(bg=config.MODERN_LIGHT_THEME["primary_color"], fg='white')
                 self.update_status("🎯 Object tracking enabled - persistent annotations activated")
             else:
-                self.tracking_button.config(bg=config.CYBERPUNK_THEME["button_color"])
+                self.tracking_button.config(bg=config.MODERN_LIGHT_THEME["button_color"],
+                                           fg=config.MODERN_LIGHT_THEME["text_color"])
                 self.update_status("⚠️ Object tracking disabled - single-shot detection mode")
         else:
             self.tracking_enabled = not self.tracking_enabled  # Revert
@@ -571,22 +708,7 @@ class DivyaDrishtiGUI:
         self.confidence_label.config(text=f"{value:.2f}")
         self.confidence_threshold = value
 
-    def open_tactical_map(self):
-        """Open the tactical map in web browser"""
-        try:
-            # Get the path to the tactical map HTML file
-            map_path = os.path.join(os.path.dirname(__file__), "tactical_map.html")
 
-            if os.path.exists(map_path):
-                # Convert to file URL
-                file_url = f"file:///{map_path.replace(os.sep, '/')}"
-                webbrowser.open(file_url)
-                self.update_status("🗺️ Tactical map opened in browser")
-            else:
-                messagebox.showerror("Error", "Tactical map file not found!")
-        except Exception as e:
-            messagebox.showerror("Error", f"Failed to open tactical map: {str(e)}")
-            self.update_status("❌ Failed to open tactical map")
 
     def update_drone_location(self):
         """Simulate drone movement and update location display"""
@@ -608,8 +730,7 @@ class DivyaDrishtiGUI:
             else:
                 self.drone_sector = "JAMMU BORDER ZONE"
 
-        # Update button text with current location (optional - can be removed if not needed)
-        # The location is now primarily shown in the web map when opened
+        # Update location tracking for surveillance monitoring
 
     def start_detection(self):
         """Start drone surveillance"""
