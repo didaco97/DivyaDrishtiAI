@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DivyaDrishti - AI Border Surveillance System</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <i class="fas fa-helicopter logo-icon"></i>
+                <div class="logo-text">
+                    <h1>DivyaDrishti</h1>
+                    <span class="version">v2.0 Web Edition</span>
+                </div>
+            </div>
+            
+            <nav class="main-nav">
+                <a href="#dashboard" class="nav-link active">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Dashboard
+                </a>
+                <a href="#analytics" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    Analytics
+                </a>
+                <a href="#settings" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    Settings
+                </a>
+            </nav>
+            
+            <div class="header-actions">
+                <div class="status-indicator">
+                    <span class="status-dot online"></span>
+                    <span class="status-text">Online</span>
+                </div>
+                <div class="user-profile">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Dashboard -->
+    <main class="dashboard">
+        <!-- Control Panel -->
+        <aside class="control-panel panel-enter" style="--index: 0">
+            <!-- Model Selection Card -->
+            <div class="glass-card model-selection">
+                <div class="card-header">
+                    <i class="fas fa-robot"></i>
+                    <h3>AI Model Selection</h3>
+                </div>
+                <div class="card-content">
+                    <div class="dropdown-container">
+                        <select id="modelSelect" class="custom-dropdown">
+                            <option value="yolov11n">YOLOv11n - Fast Detection</option>
+                            <option value="yolov11s">YOLOv11s - Balanced</option>
+                            <option value="yolov11m">YOLOv11m - High Accuracy</option>
+                            <option value="foottrail">FootTrail - Border Specialist</option>
+                        </select>
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </div>
+                    <div class="model-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Performance:</span>
+                            <span class="stat-value performance-high">High</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Accuracy:</span>
+                            <span class="stat-value">94.2%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Surveillance Controls -->
+            <div class="glass-card surveillance-controls">
+                <div class="card-header">
+                    <i class="fas fa-crosshairs"></i>
+                    <h3>Surveillance Control</h3>
+                </div>
+                <div class="card-content">
+                    <button id="startStopBtn" class="primary-button pulse-glow">
+                        <i class="fas fa-play"></i>
+                        <span>START SCAN</span>
+                    </button>
+                    
+                    <div class="control-group">
+                        <div class="toggle-container">
+                            <label class="toggle-label">Tracking:</label>
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="trackingToggle">
+                                <label for="trackingToggle" class="toggle-slider"></label>
+                            </div>
+                            <span class="toggle-status">OFF</span>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="slider-label">Confidence: <span id="confidenceValue">75%</span></label>
+                        <div class="slider-container">
+                            <input type="range" id="confidenceSlider" min="10" max="100" value="75" class="custom-slider">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="glass-card quick-actions">
+                <div class="card-header">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Quick Actions</h3>
+                </div>
+                <div class="card-content">
+                    <div class="action-buttons">
+                        <button class="action-btn" id="screenshotBtn">
+                            <i class="fas fa-camera"></i>
+                            <span>Screenshot</span>
+                        </button>
+                        <button class="action-btn" id="recordBtn">
+                            <i class="fas fa-video"></i>
+                            <span>Record</span>
+                        </button>
+                        <button class="action-btn" id="mapBtn">
+                            <i class="fas fa-map"></i>
+                            <span>Tactical Map</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Video Display Area -->
+        <section class="video-display panel-enter" style="--index: 1">
+            <!-- Raw Feed Panel -->
+            <div class="video-panel glass-card">
+                <div class="video-header">
+                    <div class="video-title">
+                        <i class="fas fa-video"></i>
+                        <span>Alpha Drone Feed</span>
+                        <div class="live-indicator">
+                            <span class="live-dot"></span>
+                            LIVE
+                        </div>
+                    </div>
+                    <div class="video-controls">
+                        <button class="video-control-btn" id="fullscreenRaw">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                        <button class="video-control-btn" id="captureRaw">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="video-container">
+                    <video id="rawFeed" class="video-stream" autoplay muted>
+                        <source src="" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-overlay">
+                        <div class="loading-spinner">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <span>Connecting to drone feed...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Analysis Panel -->
+            <div class="video-panel glass-card">
+                <div class="video-header">
+                    <div class="video-title">
+                        <i class="fas fa-brain"></i>
+                        <span>AI Detection Analysis</span>
+                        <div class="fps-counter">
+                            <span id="fpsValue">0</span> FPS
+                        </div>
+                    </div>
+                    <div class="video-controls">
+                        <button class="video-control-btn" id="fullscreenAI">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                        <button class="video-control-btn" id="captureAI">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="video-container">
+                    <canvas id="aiCanvas" class="video-stream"></canvas>
+                    <div class="detection-overlay" id="detectionOverlay">
+                        <!-- Detection boxes will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Information Panel -->
+        <aside class="info-panel panel-enter" style="--index: 2">
+            <!-- Threat Alerts -->
+            <div class="glass-card threat-alerts">
+                <div class="card-header">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Threat Alerts</h3>
+                    <span class="alert-count">3</span>
+                </div>
+                <div class="card-content">
+                    <div class="alerts-container" id="alertsContainer">
+                        <!-- Alerts will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Metrics -->
+            <div class="glass-card performance-metrics">
+                <div class="card-header">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <h3>Performance</h3>
+                </div>
+                <div class="card-content">
+                    <div class="metric-item">
+                        <span class="metric-label">Processing Speed:</span>
+                        <div class="metric-bar">
+                            <div class="metric-fill" style="width: 85%"></div>
+                        </div>
+                        <span class="metric-value">25 FPS</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">GPU Usage:</span>
+                        <div class="metric-bar">
+                            <div class="metric-fill" style="width: 60%"></div>
+                        </div>
+                        <span class="metric-value">60%</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Memory:</span>
+                        <div class="metric-bar">
+                            <div class="metric-fill" style="width: 45%"></div>
+                        </div>
+                        <span class="metric-value">4.2GB</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Drone Status -->
+            <div class="glass-card drone-status">
+                <div class="card-header">
+                    <i class="fas fa-helicopter"></i>
+                    <h3>Drone Status</h3>
+                </div>
+                <div class="card-content">
+                    <div class="status-grid">
+                        <div class="status-item">
+                            <span class="status-label">GPS:</span>
+                            <span class="status-value">32.79639N, 74.87294E</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Altitude:</span>
+                            <span class="status-value">150m</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Flight Time:</span>
+                            <span class="status-value">03:54:29</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Battery:</span>
+                            <span class="status-value">78%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Floating Action Buttons -->
+    <div class="floating-actions">
+        <button class="fab emergency-stop" id="emergencyStop">
+            <i class="fas fa-stop"></i>
+        </button>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/video-handler.js"></script>
+    <script src="js/detection-engine.js"></script>
+</body>
+</html>

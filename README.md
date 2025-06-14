@@ -59,6 +59,11 @@
 
 *Comprehensive project overview, technical details, and implementation insights*
 
+### 🌐 Web Interface
+[![Web Application](https://img.shields.io/badge/🌐_Web_Interface-Launch_App-00E5FF?style=for-the-badge&logo=google-chrome&logoColor=white)](web/index.html)
+
+*Next-generation web-based surveillance interface with modern UI/UX and real-time capabilities*
+
 </div>
 
 ### 🎯 Key Highlights
@@ -99,6 +104,14 @@
 - **📊 Live Dashboard**: Real-time threat assessment and detection statistics
 - **🔧 Dynamic Configuration**: Hot-swappable models for different surveillance scenarios
 - **📹 Multi-source Input**: Drone feeds, security cameras, and surveillance streams
+
+### 🌐 Web Interface (NEW!)
+- **🎨 Modern UI/UX**: Glass morphism design with smooth animations and micro-interactions
+- **📱 Responsive Design**: Adapts seamlessly to desktop, tablet, and mobile devices
+- **⚡ Real-time Processing**: Browser-based AI detection with WebRTC video streaming
+- **🎭 Interactive Elements**: Hover effects, ripple animations, and visual feedback
+- **🗺️ Tactical Mapping**: Interactive map with real-time drone positioning and threat markers
+- **🚀 Performance Monitoring**: Live FPS counter, system metrics, and optimization controls
 
 ## 🛠️ Technology Stack
 
@@ -158,7 +171,7 @@
 
 ```
 DivyaDrishti/
-├── 🎯 main.py                      # Application entry point
+├── 🎯 main.py                      # Desktop application entry point
 ├── 🎮 gui_app.py                   # Cyberpunk-themed GUI interface
 ├── 🤖 object_detector.py           # Multi-model YOLO detector with tracking
 ├── 📊 detection_logger.py          # Simplified notification logging
@@ -172,6 +185,18 @@ DivyaDrishti/
 ├── 🎯 bytetrack.yaml               # ByteTrack tracking configuration
 ├── 🎯 divyadrishti_tracker.yaml    # Custom BoT-SORT tracking configuration
 ├── 🗺️ tactical_map.html            # Interactive map interface
+├── 🌐 web/                         # Web-based interface (NEW!)
+│   ├── index.html                 # Main web application
+│   ├── tactical-map.html          # Interactive tactical map
+│   ├── css/
+│   │   ├── styles.css            # Modern UI styling with glass morphism
+│   │   └── animations.css        # Animation keyframes and effects
+│   ├── js/
+│   │   ├── main.js              # Core web application logic
+│   │   ├── video-handler.js     # Video processing and display
+│   │   ├── detection-engine.js  # AI detection simulation
+│   │   └── animations.js        # Animation controller
+│   └── README.md                 # Web interface documentation
 ├── 🚀 Installation Scripts/
 │   ├── install.bat                 # Windows installation
 │   ├── install.sh                  # Linux/macOS installation
@@ -184,6 +209,10 @@ DivyaDrishti/
 │   ├── yolo11m.pt                 # High accuracy (40.7 MB)
 │   ├── yolo11s-seg.pt             # Segmentation mode (20.7 MB)
 │   └── *.onnx                     # Optimized ONNX versions
+├── 📁 assets/images/               # Application screenshots
+│   ├── main-interface.png         # Main interface screenshot
+│   ├── detection-example.png      # AI detection in action
+│   └── tactical-map.png           # Tactical map interface
 ├── 📁 logs/                        # Detection logs (cleaned)
 ├── 📁 Models/optimized/            # Cached optimized models
 └── 📄 LICENSE                      # MIT License
@@ -229,8 +258,23 @@ python main.py --check
 ```
 
 #### 4️⃣ Launch Application
+
+**Desktop Version:**
 ```bash
 python main.py
+```
+
+**Web Version:**
+```bash
+# Navigate to web directory
+cd web
+
+# Start local server (choose one)
+python -m http.server 8000        # Python 3
+python -m SimpleHTTPServer 8000   # Python 2
+php -S localhost:8000             # PHP
+
+# Open browser and go to: http://localhost:8000
 ```
 
 ### 🎮 First Run
